@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Instructor from "./pages/Instructor";
 import AddInstructor from "./pages/AddInstructor";
+import EditInstructor from "./pages/EditInstructor";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ const App = () => (
           <Route path="/" element={<Dashboard />} />
           <Route path="/instructor" element={<Instructor />} />
           <Route path="/instructor/add" element={<AddInstructor />} />
+          <Route path="/instructor/edit/:id" element={<EditInstructor />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -11,6 +11,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Table,
   TableBody,
   TableCell,
@@ -153,6 +163,8 @@ export function InstructorTable() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [instructors, setInstructors] = useState<Instructor[]>(mockData);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [instructorToDelete, setInstructorToDelete] = useState<Instructor | null>(null);
 
   const filteredData = instructors.filter((instructor) => {
     const matchesSearch =
@@ -172,6 +184,26 @@ export function InstructorTable() {
           : instructor
       )
     );
+  };
+
+  const handleDeleteClick = (instructor: Instructor) => {
+    setInstructorToDelete(instructor);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (instructorToDelete) {
+      setInstructors(prevInstructors =>
+        prevInstructors.filter(instructor => instructor.id !== instructorToDelete.id)
+      );
+      setDeleteDialogOpen(false);
+      setInstructorToDelete(null);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialogOpen(false);
+    setInstructorToDelete(null);
   };
 
   const totalPages = Math.ceil(filteredData.length / parseInt(entriesPerPage));
@@ -291,6 +323,7 @@ export function InstructorTable() {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                        onClick={() => navigate(`/instructor/edit/${instructor.id}`)}
                       >
                         <Edit2 className="h-4 w-4" />
                       </Button>
@@ -298,6 +331,7 @@ export function InstructorTable() {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                        onClick={() => handleDeleteClick(instructor)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -342,6 +376,33 @@ export function InstructorTable() {
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the instructor{" "}
+              <span className="font-semibold">
+                {instructorToDelete?.arabicName} ({instructorToDelete?.englishName})
+              </span>{" "}
+              and remove all associated data.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={handleDeleteCancel}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
