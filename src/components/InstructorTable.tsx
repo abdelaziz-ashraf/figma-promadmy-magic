@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -146,6 +147,7 @@ const mockData: Instructor[] = [
 ];
 
 export function InstructorTable() {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState("10");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -214,7 +216,7 @@ export function InstructorTable() {
             </SelectContent>
           </Select>
         </div>
-        <Button className="w-full lg:w-auto">
+        <Button className="w-full lg:w-auto" onClick={() => navigate("/instructor/add")}>
           <Plus className="h-4 w-4 mr-2" />
           Add instructor
         </Button>
