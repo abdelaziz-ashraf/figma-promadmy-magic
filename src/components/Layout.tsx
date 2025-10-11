@@ -66,8 +66,14 @@ export function Layout({ children }: LayoutProps) {
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="p-6 border-b border-sidebar-border flex items-center justify-between">
-            <div className="text-2xl font-bold text-primary">PMA</div>
+          <div className="p-3 border-b border-sidebar-border flex items-center justify-between">
+            <div className="flex items-center">
+              <img 
+                src="/pma-logo.png" 
+                alt="PMA Logo" 
+                className="h-12 w-auto"
+              />
+            </div>
             <Button
               variant="ghost"
               size="icon"
