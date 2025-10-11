@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Search, Edit2, Trash2, Plus, ChevronLeft, ChevronRight } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Instructor {
   id: string;
@@ -29,6 +29,7 @@ interface Instructor {
   specialization: string;
   status: "Active" | "Blocked";
   courses: number;
+  avatar: string;
 }
 
 const mockData: Instructor[] = [
@@ -41,6 +42,7 @@ const mockData: Instructor[] = [
     specialization: "Head of Technology",
     status: "Active",
     courses: 50,
+    avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
   },
   {
     id: "2",
@@ -51,6 +53,7 @@ const mockData: Instructor[] = [
     specialization: "Head of Technology",
     status: "Blocked",
     courses: 80,
+    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
   },
   {
     id: "3",
@@ -61,6 +64,7 @@ const mockData: Instructor[] = [
     specialization: "Head of Technology",
     status: "Active",
     courses: 100,
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
   },
   {
     id: "4",
@@ -71,6 +75,7 @@ const mockData: Instructor[] = [
     specialization: "Head of Technology",
     status: "Blocked",
     courses: 20,
+    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
   },
   {
     id: "5",
@@ -81,6 +86,7 @@ const mockData: Instructor[] = [
     specialization: "Head of Technology",
     status: "Blocked",
     courses: 12,
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
   },
   {
     id: "6",
@@ -91,6 +97,7 @@ const mockData: Instructor[] = [
     specialization: "Head of Technology",
     status: "Active",
     courses: 12,
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
   },
   {
     id: "7",
@@ -101,6 +108,7 @@ const mockData: Instructor[] = [
     specialization: "Head of Technology",
     status: "Blocked",
     courses: 12,
+    avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
   },
   {
     id: "8",
@@ -111,6 +119,7 @@ const mockData: Instructor[] = [
     specialization: "Head of Technology",
     status: "Active",
     courses: 12,
+    avatar: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=150&h=150&fit=crop&crop=face",
   },
   {
     id: "9",
@@ -121,6 +130,7 @@ const mockData: Instructor[] = [
     specialization: "Head of Technology",
     status: "Blocked",
     courses: 12,
+    avatar: "https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=150&h=150&fit=crop&crop=face",
   },
   {
     id: "10",
@@ -131,6 +141,7 @@ const mockData: Instructor[] = [
     specialization: "Head of Technology",
     status: "Blocked",
     courses: 12,
+    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face",
   },
 ];
 
@@ -139,8 +150,9 @@ export function InstructorTable() {
   const [entriesPerPage, setEntriesPerPage] = useState("10");
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
+  const [instructors, setInstructors] = useState<Instructor[]>(mockData);
 
-  const filteredData = mockData.filter((instructor) => {
+  const filteredData = instructors.filter((instructor) => {
     const matchesSearch =
       instructor.englishName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       instructor.arabicName.includes(searchTerm) ||
@@ -149,6 +161,16 @@ export function InstructorTable() {
       statusFilter === "all" || instructor.status.toLowerCase() === statusFilter;
     return matchesSearch && matchesStatus;
   });
+
+  const handleStatusChange = (instructorId: string, newStatus: string) => {
+    setInstructors(prevInstructors =>
+      prevInstructors.map(instructor =>
+        instructor.id === instructorId
+          ? { ...instructor, status: newStatus === "active" ? "Active" : "Blocked" }
+          : instructor
+      )
+    );
+  };
 
   const totalPages = Math.ceil(filteredData.length / parseInt(entriesPerPage));
   const startIndex = (currentPage - 1) * parseInt(entriesPerPage);
@@ -220,6 +242,11 @@ export function InstructorTable() {
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Avatar className="h-8 w-8">
+                        <AvatarImage 
+                          src={instructor.avatar} 
+                          alt={instructor.arabicName}
+                          className="object-cover"
+                        />
                         <AvatarFallback className="bg-primary/10 text-primary text-xs">
                           {instructor.arabicName.charAt(0)}
                         </AvatarFallback>
@@ -236,7 +263,10 @@ export function InstructorTable() {
                   </TableCell>
                   <TableCell>{instructor.specialization}</TableCell>
                   <TableCell>
-                    <Select defaultValue={instructor.status.toLowerCase()}>
+                    <Select 
+                      value={instructor.status.toLowerCase()}
+                      onValueChange={(value) => handleStatusChange(instructor.id, value)}
+                    >
                       <SelectTrigger
                         className={`w-28 border-0 ${
                           instructor.status === "Active"
