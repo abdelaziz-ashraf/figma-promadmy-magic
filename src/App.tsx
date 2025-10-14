@@ -7,6 +7,8 @@ import Dashboard from "./pages/Dashboard";
 import Instructor from "./pages/Instructor";
 import AddInstructor from "./pages/AddInstructor";
 import EditInstructor from "./pages/EditInstructor";
+import Category from "./pages/Category";
+import AddCategory from "./pages/AddCategory";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +24,8 @@ const App = () => (
           <Route path="/instructor" element={<Instructor />} />
           <Route path="/instructor/add" element={<AddInstructor />} />
           <Route path="/instructor/edit/:id" element={<EditInstructor />} />
+          <Route path="/categorys" element={<Category />} />
+          <Route path="/categorys/add" element={<AddCategory />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
