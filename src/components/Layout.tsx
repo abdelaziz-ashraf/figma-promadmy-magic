@@ -28,19 +28,19 @@ interface LayoutProps {
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
-  { name: "instructor", href: "/instructor", icon: Users },
-  { name: "courses", href: "/courses", icon: BookOpen },
-  { name: "categorys", href: "/categorys", icon: Folder },
+  { name: "Instructor", href: "/instructor", icon: Users },
+  { name: "Courses", href: "/courses", icon: BookOpen },
+  { name: "Categories", href: "/categorys", icon: Folder },
   { name: "Accreditations", href: "/accreditations", icon: Award },
   { name: "Services", href: "/services", icon: Settings },
   { name: "FAQs", href: "/faqs", icon: HelpCircle },
   { name: "Testimonials", href: "/testimonials", icon: MessageSquare },
   { name: "Contact us requests", href: "/contact-requests", icon: Mail },
-  { name: "emails requests", href: "/email-requests", icon: Mail },
+  { name: "Emails requests", href: "/email-requests", icon: Mail },
   { name: "Academy info", href: "/academy-info", icon: Info },
-  { name: "free videos", href: "/free-videos", icon: Video },
-  { name: "free articles", href: "/free-articles", icon: FileText },
-  { name: "gallery", href: "/gallery", icon: ImageIcon },
+  { name: "Free videos", href: "/free-videos", icon: Video },
+  { name: "Free articles", href: "/free-articles", icon: FileText },
+  { name: "Gallery", href: "/gallery", icon: ImageIcon },
 ];
 
 export function Layout({ children }: LayoutProps) {

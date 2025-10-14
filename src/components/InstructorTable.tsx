@@ -232,9 +232,9 @@ export function InstructorTable() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="25">25</SelectItem>
-              <SelectItem value="50">50</SelectItem>
+              <SelectItem value="10">20</SelectItem>
+              <SelectItem value="25">50</SelectItem>
+              <SelectItem value="50">100</SelectItem>
             </SelectContent>
           </Select>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -266,7 +266,7 @@ export function InstructorTable() {
                 <TableHead className="min-w-[120px]">Phone</TableHead>
                 <TableHead className="min-w-[180px]">Specialization</TableHead>
                 <TableHead className="min-w-[120px]">Status</TableHead>
-                <TableHead className="min-w-[80px]">courses</TableHead>
+                <TableHead className="min-w-[80px]">Courses</TableHead>
                 <TableHead className="min-w-[100px]">Action</TableHead>
               </TableRow>
             </TableHeader>

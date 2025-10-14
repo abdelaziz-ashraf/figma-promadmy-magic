@@ -165,7 +165,7 @@ const AddInstructor = () => {
                   name="profile"
                   render={({ field: { value, onChange, ...field } }) => (
                     <FormItem>
-                      <FormLabel>Profile</FormLabel>
+                      <FormLabel>Instructor Image</FormLabel>
                       <FormControl>
                         <div className="flex items-center gap-4">
                           <Button
