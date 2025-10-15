@@ -281,7 +281,7 @@ export default function CoursesTable() {
                 <TableHead className="text-foreground font-medium">Price</TableHead>
                 <TableHead className="text-foreground font-medium">Subscription duration</TableHead>
                 <TableHead className="text-foreground font-medium">Status</TableHead>
-                <TableHead className="text-foreground font-medium">students</TableHead>
+                <TableHead className="text-foreground font-medium">Students</TableHead>
                 <TableHead className="text-foreground font-medium">Action</TableHead>
               </TableRow>
             </TableHeader>

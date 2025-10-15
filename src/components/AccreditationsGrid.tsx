@@ -17,7 +17,9 @@ interface Accreditation {
 const AccreditationsGrid = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [editingAccreditation, setEditingAccreditation] = useState<Accreditation | null>(null);
   
   const [accreditations, setAccreditations] = useState<Accreditation[]>([
     { id: 1, image: "/pma-logo.png", show: true },
@@ -58,6 +60,32 @@ const AccreditationsGrid = () => {
     toast.success("Accreditation added successfully");
   };
 
+  const handleEdit = (accreditation: Accreditation) => {
+    setEditingAccreditation(accreditation);
+    setIsEditDialogOpen(true);
+    setSelectedFile(null);
+  };
+
+  const handleUpdate = () => {
+    if (!selectedFile || !editingAccreditation) {
+      toast.error("Please select a file");
+      return;
+    }
+    
+    setAccreditations(prev =>
+      prev.map(acc =>
+        acc.id === editingAccreditation.id
+          ? { ...acc, image: URL.createObjectURL(selectedFile) }
+          : acc
+      )
+    );
+    
+    setIsEditDialogOpen(false);
+    setEditingAccreditation(null);
+    setSelectedFile(null);
+    toast.success("Accreditation updated successfully");
+  };
+
   const filteredAccreditations = accreditations.filter(acc =>
     searchTerm === "" || acc.id.toString().includes(searchTerm)
   );
@@ -65,21 +93,13 @@ const AccreditationsGrid = () => {
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div className="relative w-full sm:w-64">
-          <Input
-            type="text"
-            placeholder="search"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-4"
-          />
-        </div>
+        
         
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-[#8B7355] hover:bg-[#8B7355]/90 text-white">
+            <Button className="bg-[#DAB763] hover:bg-[#8B7355]/90 text-white">
               <Upload className="mr-2 h-4 w-4" />
-              Upload a photo
+              Upload an Accreditation
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
@@ -103,7 +123,7 @@ const AccreditationsGrid = () => {
               <div className="flex justify-end gap-2 pt-4">
                 <Button
                   onClick={handleSave}
-                  className="bg-[#8B7355] hover:bg-[#8B7355]/90 text-white"
+                  className="bg-[#DAB763] hover:bg-[#8B7355]/90 text-white"
                 >
                   Save
                 </Button>
@@ -111,6 +131,48 @@ const AccreditationsGrid = () => {
                   variant="destructive"
                   onClick={() => {
                     setIsAddDialogOpen(false);
+                    setSelectedFile(null);
+                  }}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Edit Dialog */}
+        <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Update Accreditation</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="edit-file">Choose a new image</Label>
+                <Input
+                  id="edit-file"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                  className="cursor-pointer"
+                />
+                {!selectedFile && (
+                  <p className="text-sm text-muted-foreground">No file has been selected</p>
+                )}
+              </div>
+              <div className="flex justify-end gap-2 pt-4">
+                <Button
+                  onClick={handleUpdate}
+                  className="bg-[#DAB763] hover:bg-[#8B7355]/90 text-white"
+                >
+                  Update
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    setIsEditDialogOpen(false);
+                    setEditingAccreditation(null);
                     setSelectedFile(null);
                   }}
                 >
@@ -146,6 +208,7 @@ const AccreditationsGrid = () => {
                 <Button
                   variant="ghost"
                   size="icon"
+                  onClick={() => handleEdit(accreditation)}
                   className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
                 >
                   <Edit2 className="h-4 w-4" />
