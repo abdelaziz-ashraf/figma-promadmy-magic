@@ -12,6 +12,9 @@ import AddCategory from "./pages/AddCategory";
 import EditCategory from "./pages/EditCategory";
 import Courses from "./pages/Courses";
 import Accreditations from "./pages/Accreditations";
+import Services from "./pages/Services";
+import AddServices from "./pages/AddServices";
+import EditServices from "./pages/EditServices";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +35,9 @@ const App = () => (
           <Route path="/categorys/edit/:id" element={<EditCategory />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/accreditations" element={<Accreditations />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/services/add" element={<AddServices />} />
+          <Route path="/services/edit/:id" element={<EditServices />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
