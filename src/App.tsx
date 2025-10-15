@@ -10,6 +10,7 @@ import EditInstructor from "./pages/EditInstructor";
 import Category from "./pages/Category";
 import AddCategory from "./pages/AddCategory";
 import EditCategory from "./pages/EditCategory";
+import Courses from "./pages/Courses";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/categorys" element={<Category />} />
           <Route path="/categorys/add" element={<AddCategory />} />
           <Route path="/categorys/edit/:id" element={<EditCategory />} />
+          <Route path="/courses" element={<Courses />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
