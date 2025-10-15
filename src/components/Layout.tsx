@@ -29,8 +29,8 @@ interface LayoutProps {
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Instructor", href: "/instructor", icon: Users },
-  { name: "Courses", href: "/courses", icon: BookOpen },
   { name: "Categories", href: "/categorys", icon: Folder },
+  { name: "Courses", href: "/courses", icon: BookOpen },
   { name: "Accreditations", href: "/accreditations", icon: Award },
   { name: "Services", href: "/services", icon: Settings },
   { name: "FAQs", href: "/faqs", icon: HelpCircle },

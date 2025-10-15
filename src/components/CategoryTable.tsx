@@ -18,6 +18,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
 
 // Mock data
 const mockCategories = Array.from({ length: 50 }, (_, i) => ({
@@ -29,11 +41,13 @@ const mockCategories = Array.from({ length: 50 }, (_, i) => ({
 
 export function CategoryTable() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState("20");
   const [currentPage, setCurrentPage] = useState(1);
+  const [categories, setCategories] = useState(mockCategories);
 
-  const filteredCategories = mockCategories.filter(
+  const filteredCategories = categories.filter(
     (category) =>
       category.arabicName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       category.englishName.toLowerCase().includes(searchQuery.toLowerCase())
@@ -48,6 +62,17 @@ export function CategoryTable() {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
+  };
+
+  const handleDeleteCategory = (categoryId: number, categoryName: string) => {
+    setCategories(prevCategories => 
+      prevCategories.filter(category => category.id !== categoryId)
+    );
+    
+    toast({
+      title: "Success",
+      description: `Category "${categoryName}" has been deleted successfully`,
+    });
   };
 
   return (
@@ -70,21 +95,6 @@ export function CategoryTable() {
           Add category
           <Plus className="h-4 w-4" />
         </Button>
-      </div>
-
-      <div className="flex items-center gap-2 text-sm">
-        <span className="text-muted-foreground">Show</span>
-        <Select value={entriesPerPage} onValueChange={setEntriesPerPage}>
-          <SelectTrigger className="w-20">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="20">20</SelectItem>
-            <SelectItem value="50">50</SelectItem>
-            <SelectItem value="100">100</SelectItem>
-          </SelectContent>
-        </Select>
-        <span className="text-muted-foreground">entries</span>
       </div>
 
       <div className="border rounded-lg overflow-hidden">
@@ -110,16 +120,38 @@ export function CategoryTable() {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10"
+                        onClick={() => navigate(`/categorys/edit/${category.id}`)}
                       >
                         <Edit2 className="h-4 w-4" />
                       </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will permanently delete the category "{category.arabicName}" and remove all associated data.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDeleteCategory(category.id, category.arabicName)}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </TableCell>
                 </TableRow>
