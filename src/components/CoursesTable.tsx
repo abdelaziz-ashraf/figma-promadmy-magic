@@ -206,9 +206,9 @@ export default function CoursesTable() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      {/* <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-2xl font-semibold text-foreground">Courses</h1>
-      </div>
+      </div> */}
 
       <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
         <div className="relative flex-1 w-full lg:w-auto">

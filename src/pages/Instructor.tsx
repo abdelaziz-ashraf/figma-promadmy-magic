@@ -4,7 +4,10 @@ import { InstructorTable } from "@/components/InstructorTable";
 const Instructor = () => {
   return (
     <Layout>
-      <InstructorTable />
+      <div className="space-y-6">
+        <h1 className="text-2xl font-semibold text-foreground">Instructors</h1>
+        <InstructorTable />
+      </div>
     </Layout>
   );
 };

@@ -88,7 +88,8 @@ export function Layout({ children }: LayoutProps) {
           <nav className="flex-1 overflow-y-auto p-4">
             <ul className="space-y-1">
               {navigation.map((item) => {
-                const isActive = location.pathname === item.href;
+                const isActive = location.pathname === item.href || 
+                  (item.href !== "/" && location.pathname.startsWith(item.href));
                 return (
                   <li key={item.name}>
                     <Link
@@ -96,8 +97,8 @@ export function Layout({ children }: LayoutProps) {
                       className={cn(
                         "flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-colors",
                         isActive
-                          ? "bg-primary text-primary-foreground"
-                          : "text-sidebar-foreground hover:bg-sidebar-accent"
+                          ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                          : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                       )}
                       onClick={() => setSidebarOpen(false)}
                     >

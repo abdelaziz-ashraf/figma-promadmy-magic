@@ -50,16 +50,18 @@ const EditServices = () => {
 
   return (
     <Layout>
-      <div className="p-6 max-w-4xl">
+      <div className="max-w-4xl space-y-6">
+        <h1 className="text-2xl font-semibold text-foreground">Edit Service</h1>
         <Button
           variant="ghost"
+          size="icon"
           onClick={() => navigate("/services")}
           className="mb-6"
         >
-          <ArrowLeft className="mr-2 h-4 w-4" />
+          <ArrowLeft className="h-5 w-5" />
         </Button>
 
-        <div className="rounded-lg border bg-card p-6">
+        <div className="bg-card border rounded-lg p-6">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
