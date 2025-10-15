@@ -13,14 +13,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -73,9 +65,13 @@ export function ServicesTable() {
   };
 
   return (
-    <div className="space-y-4 p-6">
+    <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div className="w-full sm:w-80">
+        <h1 className="text-2xl font-semibold text-foreground">Services</h1>
+      </div>
+
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="relative w-full sm:w-96">
           <Input
             placeholder="search"
             value={search}
@@ -92,21 +88,22 @@ export function ServicesTable() {
         </Button>
       </div>
 
-      <div className="rounded-md border bg-card overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Icon</TableHead>
-              <TableHead>Arabic name</TableHead>
-              <TableHead>English name</TableHead>
-              <TableHead className="text-right">Action</TableHead>
-            </TableRow>
-          </TableHeader>
+      <div className="border rounded-lg overflow-hidden">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-muted/50">
+                <TableHead className="min-w-[100px]">Icon</TableHead>
+                <TableHead className="min-w-[150px]">Arabic name</TableHead>
+                <TableHead className="min-w-[150px]">English name</TableHead>
+                <TableHead className="min-w-[100px]">Action</TableHead>
+              </TableRow>
+            </TableHeader>
           <TableBody>
             {paginatedServices.map((service) => {
               const IconComponent = (Icons[service.icon as keyof typeof Icons] || Icons.Circle) as React.ComponentType<{ className?: string }>;
               return (
-                <TableRow key={service.id}>
+                <TableRow key={service.id} className="hover:bg-muted/30">
                   <TableCell>
                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#C4A962]/10">
                       <IconComponent className="h-4 w-4 text-[#C4A962]" />
@@ -114,14 +111,15 @@ export function ServicesTable() {
                   </TableCell>
                   <TableCell className="font-medium">{service.arabicName}</TableCell>
                   <TableCell>{service.englishName}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
+                  <TableCell>
+                    <div className="flex items-center gap-2">
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => navigate(`/services/edit/${service.id}`)}
+                        className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10"
                       >
-                        <Edit className="h-4 w-4 text-blue-500" />
+                        <Edit className="h-4 w-4" />
                       </Button>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
@@ -158,37 +156,47 @@ export function ServicesTable() {
             })}
           </TableBody>
         </Table>
+        </div>
       </div>
 
-      <div className="flex justify-center">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-                className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-              />
-            </PaginationItem>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <PaginationItem key={page}>
-                <PaginationLink
-                  onClick={() => setCurrentPage(page)}
-                  isActive={currentPage === page}
-                  className="cursor-pointer"
-                >
-                  {page}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
-            <PaginationItem>
-              <PaginationNext
-                onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
-                className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+            disabled={currentPage === 1}
+            className="h-8 w-8"
+          >
+            <span>‹</span>
+          </Button>
+
+          {Array.from({ length: Math.min(4, totalPages) }, (_, i) => {
+            const page = i + 1;
+            return (
+              <Button
+                key={page}
+                variant={currentPage === page ? "default" : "ghost"}
+                size="icon"
+                onClick={() => setCurrentPage(page)}
+                className="h-8 w-8"
+              >
+                {page}
+              </Button>
+            );
+          })}
+
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+            disabled={currentPage === totalPages}
+            className="h-8 w-8"
+          >
+            <span>›</span>
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
