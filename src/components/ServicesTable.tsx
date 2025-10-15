@@ -20,6 +20,18 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
 
 const mockServices = Array.from({ length: 15 }, (_, i) => ({
   id: i + 1,
@@ -30,11 +42,13 @@ const mockServices = Array.from({ length: 15 }, (_, i) => ({
 
 export function ServicesTable() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [services, setServices] = useState(mockServices);
   const itemsPerPage = 10;
 
-  const filteredServices = mockServices.filter(
+  const filteredServices = services.filter(
     (service) =>
       service.arabicName.toLowerCase().includes(search.toLowerCase()) ||
       service.englishName.toLowerCase().includes(search.toLowerCase())
@@ -46,6 +60,17 @@ export function ServicesTable() {
     startIndex,
     startIndex + itemsPerPage
   );
+
+  const handleDeleteService = (serviceId: number, serviceName: string) => {
+    setServices(prevServices => 
+      prevServices.filter(service => service.id !== serviceId)
+    );
+    
+    toast({
+      title: "Success",
+      description: `Service "${serviceName}" has been deleted successfully`,
+    });
+  };
 
   return (
     <div className="space-y-4 p-6">
@@ -98,13 +123,34 @@ export function ServicesTable() {
                       >
                         <Edit className="h-4 w-4 text-blue-500" />
                       </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => console.log("Delete", service.id)}
-                      >
-                        <Trash2 className="h-4 w-4 text-red-500" />
-                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will permanently delete the service "{service.arabicName}" and remove all associated data.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDeleteService(service.id, service.arabicName)}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </TableCell>
                 </TableRow>
