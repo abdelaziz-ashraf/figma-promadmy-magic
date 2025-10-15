@@ -28,6 +28,18 @@ import {
 } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
 
 // Mock data
 const mockCourses = [
@@ -145,14 +157,16 @@ const mockCourses = [
 
 export default function CoursesTable() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState("10");
   const [statusFilter, setStatusFilter] = useState("all");
   const [instructorFilter, setInstructorFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
+  const [courses, setCourses] = useState(mockCourses);
 
-  const filteredCourses = mockCourses.filter((course) => {
+  const filteredCourses = courses.filter((course) => {
     const matchesSearch =
       course.arabicName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       course.englishName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -179,16 +193,21 @@ export default function CoursesTable() {
       .slice(0, 2);
   };
 
+  const handleDeleteCourse = (courseId: number, courseName: string) => {
+    setCourses(prevCourses => 
+      prevCourses.filter(course => course.id !== courseId)
+    );
+    
+    toast({
+      title: "Success",
+      description: `Course "${courseName}" has been deleted successfully`,
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-2xl font-semibold text-foreground">Courses</h1>
-        <Button
-          onClick={() => navigate("/courses/add")}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground"
-        >
-          Add course
-        </Button>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
@@ -208,9 +227,9 @@ export default function CoursesTable() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="25">25</SelectItem>
+              <SelectItem value="20">20</SelectItem>
               <SelectItem value="50">50</SelectItem>
+              <SelectItem value="100">100</SelectItem>
             </SelectContent>
           </Select>
 
@@ -309,13 +328,34 @@ export default function CoursesTable() {
                   </TableCell>
                   <TableCell>{course.students}</TableCell>
                   <TableCell>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone. This will permanently delete the course "{course.arabicName}" and remove all associated data.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleDeleteCourse(course.id, course.arabicName)}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            Delete
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </TableCell>
                 </TableRow>
               ))}
