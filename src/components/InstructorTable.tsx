@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import {
   Select,
   SelectContent,
@@ -158,6 +159,7 @@ const mockData: Instructor[] = [
 
 export function InstructorTable() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState("10");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -177,6 +179,7 @@ export function InstructorTable() {
   });
 
   const handleStatusChange = (instructorId: string, newStatus: string) => {
+    const instructor = instructors.find(i => i.id === instructorId);
     setInstructors(prevInstructors =>
       prevInstructors.map(instructor =>
         instructor.id === instructorId
@@ -184,6 +187,10 @@ export function InstructorTable() {
           : instructor
       )
     );
+    toast({
+      title: "Status Updated",
+      description: `Instructor "${instructor?.englishName}" status changed to ${newStatus === "active" ? "Active" : "Blocked"}.`,
+    });
   };
 
   const handleDeleteClick = (instructor: Instructor) => {
@@ -196,6 +203,10 @@ export function InstructorTable() {
       setInstructors(prevInstructors =>
         prevInstructors.filter(instructor => instructor.id !== instructorToDelete.id)
       );
+      toast({
+        title: "Deleted",
+        description: `Instructor "${instructorToDelete.englishName}" has been deleted successfully.`,
+      });
       setDeleteDialogOpen(false);
       setInstructorToDelete(null);
     }
@@ -214,7 +225,7 @@ export function InstructorTable() {
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Controls */}
       <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center w-full lg:w-auto">

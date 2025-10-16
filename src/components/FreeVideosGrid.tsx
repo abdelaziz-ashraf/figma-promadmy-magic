@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Search, Edit, Trash2, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Switch } from "@/components/ui/switch";
+import { useToast } from "@/hooks/use-toast";
 import {
   Pagination,
   PaginationContent,
@@ -12,22 +13,54 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const mockVideos = Array(8).fill(null).map((_, i) => ({
   id: i + 1,
-  title: "Flutter Advanced",
-  streams: 36,
+  title: "Title of the video here, this is a long title",
   thumbnail: "/placeholder.svg",
   show: i % 2 === 0,
 }));
 
 export const FreeVideosGrid = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [videos, setVideos] = useState(mockVideos);
+
+  const handleToggleShow = (id: number) => {
+    setVideos(prev =>
+      prev.map(video => video.id === id ? { ...video, show: !video.show } : video)
+    );
+    const video = videos.find(v => v.id === id);
+    toast({
+      title: "Status Updated",
+      description: `Video "${video?.title}" is now ${!video?.show ? 'visible' : 'hidden'}.`,
+    });
+  };
+
+  const handleDeleteVideo = (id: number) => {
+    const video = videos.find(v => v.id === id);
+    setVideos(prev => prev.filter(video => video.id !== id));
+    toast({
+      title: "Deleted",
+      description: `Video "${video?.title}" has been deleted successfully.`,
+    });
+  };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="relative w-full sm:w-96">
@@ -47,7 +80,7 @@ export const FreeVideosGrid = () => {
 
       {/* Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {mockVideos.map((video) => (
+        {videos.map((video) => (
           <div key={video.id} className="bg-card rounded-lg overflow-hidden shadow-sm border">
             <div className="relative">
               <img
@@ -55,9 +88,6 @@ export const FreeVideosGrid = () => {
                 alt={video.title}
                 className="w-full h-40 object-cover"
               />
-              <div className="absolute top-2 left-2 bg-background/80 px-2 py-1 rounded text-xs font-semibold">
-                {video.streams}
-              </div>
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="bg-primary/80 rounded-full p-3">
                   <div className="w-6 h-6 border-2 border-white rounded-full flex items-center justify-center">
@@ -65,18 +95,16 @@ export const FreeVideosGrid = () => {
                   </div>
                 </div>
               </div>
-              <div className="absolute bottom-2 right-2">
-                <span className="bg-background/80 px-2 py-1 rounded text-xs">
-                  Streams
-                </span>
-              </div>
             </div>
             <div className="p-3">
               <h3 className="font-medium text-sm mb-3">{video.title}</h3>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-muted-foreground">Show</span>
-                  <Switch checked={video.show} />
+                  <Switch 
+                    checked={video.show} 
+                    onCheckedChange={() => handleToggleShow(video.id)}
+                  />
                 </div>
                 <div className="flex gap-2">
                   <Button
@@ -86,9 +114,30 @@ export const FreeVideosGrid = () => {
                   >
                     <Edit className="h-4 w-4 text-blue-500" />
                   </Button>
-                  <Button variant="ghost" size="icon">
-                    <Trash2 className="h-4 w-4 text-destructive" />
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                        <Trash2 className="h-4 w-4 text-destructive" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Are you sure you want to delete this video? This action cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleDeleteVideo(video.id)}
+                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        >
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </div>
             </div>

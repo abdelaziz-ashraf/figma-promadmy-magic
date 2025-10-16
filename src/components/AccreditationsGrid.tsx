@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Edit2, Trash2, Upload } from "lucide-react";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 interface Accreditation {
   id: number;
@@ -15,6 +15,7 @@ interface Accreditation {
 }
 
 const AccreditationsGrid = () => {
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -31,20 +32,32 @@ const AccreditationsGrid = () => {
   ]);
 
   const handleToggleShow = (id: number) => {
+    const accreditation = accreditations.find(a => a.id === id);
     setAccreditations(prev =>
       prev.map(acc => acc.id === id ? { ...acc, show: !acc.show } : acc)
     );
-    toast.success("Status updated successfully");
+    toast({
+      title: "Status Updated",
+      description: `Accreditation is now ${!accreditation?.show ? 'visible' : 'hidden'}.`,
+    });
   };
 
   const handleDelete = (id: number) => {
+    const accreditation = accreditations.find(a => a.id === id);
     setAccreditations(prev => prev.filter(acc => acc.id !== id));
-    toast.success("Accreditation deleted successfully");
+    toast({
+      title: "Deleted",
+      description: "Accreditation has been deleted successfully.",
+    });
   };
 
   const handleSave = () => {
     if (!selectedFile) {
-      toast.error("Please select a file");
+      toast({
+        title: "Error",
+        description: "Please select a file",
+        variant: "destructive",
+      });
       return;
     }
     
@@ -57,7 +70,10 @@ const AccreditationsGrid = () => {
     setAccreditations(prev => [...prev, newAccreditation]);
     setIsAddDialogOpen(false);
     setSelectedFile(null);
-    toast.success("Accreditation added successfully");
+    toast({
+      title: "Success",
+      description: "Accreditation has been added successfully.",
+    });
   };
 
   const handleEdit = (accreditation: Accreditation) => {
@@ -68,7 +84,11 @@ const AccreditationsGrid = () => {
 
   const handleUpdate = () => {
     if (!selectedFile || !editingAccreditation) {
-      toast.error("Please select a file");
+      toast({
+        title: "Error",
+        description: "Please select a file",
+        variant: "destructive",
+      });
       return;
     }
     
@@ -83,7 +103,10 @@ const AccreditationsGrid = () => {
     setIsEditDialogOpen(false);
     setEditingAccreditation(null);
     setSelectedFile(null);
-    toast.success("Accreditation updated successfully");
+    toast({
+      title: "Success",
+      description: "Accreditation has been updated successfully.",
+    });
   };
 
   const filteredAccreditations = accreditations.filter(acc =>
@@ -109,16 +132,31 @@ const AccreditationsGrid = () => {
             <div className="space-y-4 py-4">
               <div className="space-y-2">
                 <Label htmlFor="file">Choose a file</Label>
-                <Input
-                  id="file"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-                  className="cursor-pointer"
-                />
-                {!selectedFile && (
-                  <p className="text-sm text-muted-foreground">No file has been selected</p>
-                )}
+                <div 
+                  className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors cursor-pointer bg-gray-50 hover:bg-gray-100"
+                  onClick={() => document.getElementById('file')?.click()}
+                >
+                  <div className="flex flex-col items-center space-y-2">
+                    <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">
+                        {selectedFile?.name || "Click to upload accreditation"}
+                      </p>
+                      <p className="text-xs text-gray-500">PNG, JPG, SVG up to 10MB</p>
+                    </div>
+                  </div>
+                  <Input
+                    id="file"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                  />
+                </div>
               </div>
               <div className="flex justify-end gap-2 pt-4">
                 <Button
@@ -150,16 +188,31 @@ const AccreditationsGrid = () => {
             <div className="space-y-4 py-4">
               <div className="space-y-2">
                 <Label htmlFor="edit-file">Choose a new image</Label>
-                <Input
-                  id="edit-file"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-                  className="cursor-pointer"
-                />
-                {!selectedFile && (
-                  <p className="text-sm text-muted-foreground">No file has been selected</p>
-                )}
+                <div 
+                  className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors cursor-pointer bg-gray-50 hover:bg-gray-100"
+                  onClick={() => document.getElementById('edit-file')?.click()}
+                >
+                  <div className="flex flex-col items-center space-y-2">
+                    <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">
+                        {selectedFile?.name || "Click to upload new image"}
+                      </p>
+                      <p className="text-xs text-gray-500">PNG, JPG, SVG up to 10MB</p>
+                    </div>
+                  </div>
+                  <Input
+                    id="edit-file"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                  />
+                </div>
               </div>
               <div className="flex justify-end gap-2 pt-4">
                 <Button

@@ -64,16 +64,17 @@ const EditCategory = () => {
 
   return (
     <Layout>
-      <div className="max-w-4xl space-y-6">
-        <h1 className="text-2xl font-semibold text-foreground">Edit Category</h1>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => navigate("/categorys")}
-          className="mb-6"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </Button>
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate("/categorys")}
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <h1 className="text-3xl font-bold">Edit Category</h1>
+        </div>
 
         <div className="bg-card border rounded-lg p-6">
           <Form {...form}>

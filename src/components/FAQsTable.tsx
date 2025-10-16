@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 import {
   Table,
   TableBody,
@@ -49,16 +50,22 @@ const mockFAQs: FAQ[] = Array.from({ length: 10 }, (_, i) => ({
 
 export function FAQsTable() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [faqs, setFaqs] = useState<FAQ[]>(mockFAQs);
 
   const handleDeleteFAQ = (id: number) => {
+    const faq = faqs.find(f => f.id === id);
     setFaqs(faqs.filter(faq => faq.id !== id));
+    toast({
+      title: "Deleted",
+      description: `FAQ "${faq?.englishQuestion}" has been deleted successfully.`,
+    });
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <Input
           placeholder="search"

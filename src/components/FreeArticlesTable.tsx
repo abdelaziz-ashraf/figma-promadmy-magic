@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 import {
   Table,
   TableBody,
@@ -26,6 +27,17 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const mockArticles = Array(10).fill(null).map((_, i) => ({
   id: i + 1,
@@ -36,11 +48,33 @@ const mockArticles = Array(10).fill(null).map((_, i) => ({
 
 export const FreeArticlesTable = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [articles, setArticles] = useState(mockArticles);
+
+  const handleStatusChange = (id: number, newStatus: "draft" | "published") => {
+    const article = articles.find(a => a.id === id);
+    setArticles(articles.map(article => 
+      article.id === id ? { ...article, status: newStatus } : article
+    ));
+    toast({
+      title: "Status Updated",
+      description: `Article "${article?.name}" status changed to ${newStatus}.`,
+    });
+  };
+
+  const handleDeleteArticle = (id: number) => {
+    const article = articles.find(a => a.id === id);
+    setArticles(articles.filter(article => article.id !== id));
+    toast({
+      title: "Deleted",
+      description: `Article "${article?.name}" has been deleted successfully.`,
+    });
+  };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="relative w-full sm:w-96">
@@ -70,14 +104,19 @@ export const FreeArticlesTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {mockArticles.map((article) => (
+            {articles.map((article) => (
               <TableRow key={article.id}>
                 <TableCell className="font-medium">{article.name}</TableCell>
                 <TableCell>
                   <span className="text-2xl">{article.image}</span>
                 </TableCell>
                 <TableCell>
-                  <Select defaultValue={article.status}>
+                  <Select 
+                    value={article.status}
+                    onValueChange={(value: "draft" | "published") => 
+                      handleStatusChange(article.id, value)
+                    }
+                  >
                     <SelectTrigger
                       className={`w-32 ${
                         article.status === "published"
@@ -102,9 +141,30 @@ export const FreeArticlesTable = () => {
                     >
                       <Edit className="h-4 w-4 text-blue-500" />
                     </Button>
-                    <Button variant="ghost" size="icon">
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Are you sure you want to delete this article? This action cannot be undone.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleDeleteArticle(article.id)}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            Delete
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </TableCell>
               </TableRow>

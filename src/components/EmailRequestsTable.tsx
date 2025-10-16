@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 import {
   Select,
   SelectContent,
@@ -45,6 +46,7 @@ const mockRequests: EmailRequest[] = Array.from({ length: 10 }, (_, i) => ({
 }));
 
 export function EmailRequestsTable() {
+  const { toast } = useToast();
   const [search, setSearch] = useState("");
   const [requests, setRequests] = useState<EmailRequest[]>(mockRequests);
 
@@ -62,13 +64,18 @@ export function EmailRequestsTable() {
   };
 
   const handleStatusChange = (id: number, newStatus: "New" | "Contacted" | "Unanswered") => {
+    const request = requests.find(r => r.id === id);
     setRequests(requests.map(request => 
       request.id === id ? { ...request, status: newStatus } : request
     ));
+    toast({
+      title: "Status Updated",
+      description: `Email request status changed to ${newStatus}.`,
+    });
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <Input
         placeholder="search"
         value={search}

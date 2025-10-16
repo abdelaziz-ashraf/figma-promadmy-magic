@@ -5,11 +5,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { MapPin, Mail, Phone, Linkedin, Facebook, Youtube } from "lucide-react";
-import { FaXTwitter } from "react-icons/fa6";
+import { MapPin, Mail, Phone, Linkedin, Facebook, Youtube, Twitter } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const AcademyInfo = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     location: "",
     email: "",
@@ -26,13 +27,18 @@ const AcademyInfo = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
+    toast({
+      title: "Success",
+      description: "Academy information has been updated successfully.",
+    });
     navigate("/");
   };
 
   return (
     <Layout>
-      <div className="p-6">
-        <form onSubmit={handleSubmit} className="bg-card rounded-lg shadow-sm p-6 max-w-4xl">
+      <div className="space-y-6">
+        <h1 className="text-3xl font-bold">Academy Info</h1>
+        <form onSubmit={handleSubmit} className="bg-card rounded-lg shadow-sm p-6 max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Location */}
             <div className="space-y-2">
@@ -115,7 +121,7 @@ const AcademyInfo = () => {
                   value={formData.x}
                   onChange={(e) => setFormData({ ...formData, x: e.target.value })}
                 />
-                <FaXTwitter className="absolute right-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Twitter className="absolute right-3 top-3 h-4 w-4 text-muted-foreground" />
               </div>
             </div>
 
@@ -148,15 +154,23 @@ const AcademyInfo = () => {
             {/* Video */}
             <div className="space-y-2">
               <Label htmlFor="video">Video</Label>
-              <div className="flex items-center gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => document.getElementById('video')?.click()}
-                >
-                  Choose a file
-                </Button>
+              <div 
+                className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors cursor-pointer bg-gray-50 hover:bg-gray-100"
+                onClick={() => document.getElementById('video')?.click()}
+              >
+                <div className="flex flex-col items-center space-y-2">
+                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                    <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">
+                      {formData.video ? formData.video.name : "Click to upload video"}
+                    </p>
+                    <p className="text-xs text-gray-500">MP4, MOV, AVI up to 100MB</p>
+                  </div>
+                </div>
                 <Input
                   id="video"
                   type="file"
@@ -164,24 +178,29 @@ const AcademyInfo = () => {
                   className="hidden"
                   onChange={(e) => setFormData({ ...formData, video: e.target.files?.[0] || null })}
                 />
-                <span className="text-sm text-muted-foreground">
-                  {formData.video?.name || "No file has been selected"}
-                </span>
               </div>
             </div>
 
             {/* Logo */}
             <div className="space-y-2">
               <Label htmlFor="logo">Logo</Label>
-              <div className="flex items-center gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => document.getElementById('logo')?.click()}
-                >
-                  Choose a File
-                </Button>
+              <div 
+                className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors cursor-pointer bg-gray-50 hover:bg-gray-100"
+                onClick={() => document.getElementById('logo')?.click()}
+              >
+                <div className="flex flex-col items-center space-y-2">
+                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                    <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">
+                      {formData.logo ? formData.logo.name : "Click to upload logo"}
+                    </p>
+                    <p className="text-xs text-gray-500">PNG, JPG, SVG up to 10MB</p>
+                  </div>
+                </div>
                 <Input
                   id="logo"
                   type="file"
@@ -189,9 +208,6 @@ const AcademyInfo = () => {
                   className="hidden"
                   onChange={(e) => setFormData({ ...formData, logo: e.target.files?.[0] || null })}
                 />
-                <span className="text-sm text-muted-foreground">
-                  {formData.logo?.name || "No file has been selected"}
-                </span>
               </div>
             </div>
           </div>

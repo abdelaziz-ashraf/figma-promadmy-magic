@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 import {
   Select,
   SelectContent,
@@ -51,7 +52,9 @@ const mockRequests: ContactRequest[] = Array.from({ length: 10 }, (_, i) => ({
 }));
 
 export function ContactRequestsTable() {
+  const { toast } = useToast();
   const [search, setSearch] = useState("");
+  const [requests, setRequests] = useState(mockRequests);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -66,8 +69,19 @@ export function ContactRequestsTable() {
     }
   };
 
+  const handleStatusChange = (id: number, newStatus: "New" | "Contacted" | "Unanswered") => {
+    const request = requests.find(r => r.id === id);
+    setRequests(requests.map(request => 
+      request.id === id ? { ...request, status: newStatus } : request
+    ));
+    toast({
+      title: "Status Updated",
+      description: `Contact request from "${request?.name}" status changed to ${newStatus}.`,
+    });
+  };
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <Input
         placeholder="search"
         value={search}
@@ -87,7 +101,7 @@ export function ContactRequestsTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {mockRequests.map((request) => (
+            {requests.map((request) => (
               <TableRow key={request.id}>
                 <TableCell className="font-medium">{request.name}</TableCell>
                 <TableCell>
@@ -136,7 +150,12 @@ export function ContactRequestsTable() {
                   </Dialog>
                 </TableCell>
                 <TableCell>
-                  <Select defaultValue={request.status}>
+                  <Select 
+                    value={request.status}
+                    onValueChange={(value: "New" | "Contacted" | "Unanswered") => 
+                      handleStatusChange(request.id, value)
+                    }
+                  >
                     <SelectTrigger className={`w-[140px] ${getStatusColor(request.status)}`}>
                       <SelectValue />
                     </SelectTrigger>

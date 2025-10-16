@@ -197,13 +197,16 @@ const EditInstructor = () => {
     return (
       <Layout>
         <div className="space-y-6">
-          <Button
-            variant="ghost"
-            onClick={handleCancel}
-            className="pl-0 hover:bg-transparent"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleCancel}
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <h1 className="text-3xl font-bold">Edit Instructor</h1>
+          </div>
           <Card>
             <CardContent className="pt-6">
               <div className="text-center py-8">
@@ -222,19 +225,20 @@ const EditInstructor = () => {
   return (
     <Layout>
       <div className="space-y-6">
-        <h1 className="text-2xl font-semibold text-foreground">Edit Instructor</h1>
-        <Button
-          variant="ghost"
-          onClick={handleCancel}
-          className="pl-0 hover:bg-transparent"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </Button>
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleCancel}
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <h1 className="text-3xl font-bold">Edit Instructor</h1>
+        </div>
 
         <Card>
           <CardContent className="pt-6">
             <div className="mb-6">
-              <h1 className="text-2xl font-semibold">Edit Instructor</h1>
               <p className="text-muted-foreground">
                 Update the instructor information below.
               </p>
@@ -335,18 +339,23 @@ const EditInstructor = () => {
                     <FormItem>
                       <FormLabel>Profile Picture</FormLabel>
                       <FormControl>
-                        <div className="flex items-center gap-4">
-                          <Button
-                            type="button"
-                            variant="outline"
-                            className="relative"
-                            onClick={() => document.getElementById('profile-upload')?.click()}
-                          >
-                            Choose a file
-                          </Button>
-                          <span className="text-sm text-muted-foreground">
-                            {value?.[0]?.name || "No file has been selected"}
-                          </span>
+                        <div 
+                          className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors cursor-pointer bg-gray-50 hover:bg-gray-100"
+                          onClick={() => document.getElementById('profile-upload')?.click()}
+                        >
+                          <div className="flex flex-col items-center space-y-2">
+                            <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                              <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                              </svg>
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium text-gray-900">
+                                {value?.[0]?.name || "Click to upload profile image"}
+                              </p>
+                              <p className="text-xs text-gray-500">PNG, JPG, SVG up to 10MB</p>
+                            </div>
+                          </div>
                           <Input
                             id="profile-upload"
                             type="file"
