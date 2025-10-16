@@ -23,6 +23,14 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface ContactRequest {
   id: number;
@@ -36,9 +44,9 @@ interface ContactRequest {
 const mockRequests: ContactRequest[] = Array.from({ length: 10 }, (_, i) => ({
   id: i + 1,
   name: "Lindsey Stroud",
-  email: "Lindsey_Stroud@gmail.com",
+  email: `Lindsey_Stroud_very_long_email_address_${i + 1}@gmail.com`,
   subject: "General",
-  message: "Is there a certificate after completing...",
+  message: `This is a sample message for request ${i + 1}. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
   status: i % 3 === 0 ? "New" : i % 3 === 1 ? "Contacted" : "Unanswered",
 }));
 
@@ -82,10 +90,50 @@ export function ContactRequestsTable() {
             {mockRequests.map((request) => (
               <TableRow key={request.id}>
                 <TableCell className="font-medium">{request.name}</TableCell>
-                <TableCell>{request.email}</TableCell>
+                <TableCell>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="text-left hover:text-blue-600 cursor-pointer">
+                        {request.email.length > 25 
+                          ? `${request.email.substring(0, 25)}...` 
+                          : request.email}
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Email Address</DialogTitle>
+                        <DialogDescription>
+                          Full email address:
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="p-4 bg-gray-50 rounded-md">
+                        <p className="font-mono text-sm break-all">{request.email}</p>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </TableCell>
                 <TableCell>{request.subject}</TableCell>
-                <TableCell className="max-w-[200px] truncate">
-                  {request.message}
+                <TableCell>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="text-left hover:text-blue-600 cursor-pointer">
+                        {request.message.length > 30 
+                          ? `${request.message.substring(0, 30)}...` 
+                          : request.message}
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-2xl">
+                      <DialogHeader>
+                        <DialogTitle>Message Content</DialogTitle>
+                        <DialogDescription>
+                          Full message from {request.name}:
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="p-4 bg-gray-50 rounded-md max-h-96 overflow-y-auto">
+                        <p className="text-sm whitespace-pre-wrap">{request.message}</p>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </TableCell>
                 <TableCell>
                   <Select defaultValue={request.status}>

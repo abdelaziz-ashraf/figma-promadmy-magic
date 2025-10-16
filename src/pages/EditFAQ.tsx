@@ -71,7 +71,7 @@ export default function EditFAQ() {
                     <FormLabel>English Question</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="english name"
+                        placeholder="English question"
                         {...field}
                         className="resize-none"
                       />
@@ -89,7 +89,7 @@ export default function EditFAQ() {
                     <FormLabel>Arabic Question</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="arabic name"
+                        placeholder="السؤال بالعربي"
                         {...field}
                         className="resize-none"
                         dir="rtl"
@@ -108,7 +108,7 @@ export default function EditFAQ() {
                     <FormLabel>English answer</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="english name"
+                        placeholder="English answer"
                         {...field}
                         className="resize-none min-h-[100px]"
                       />
@@ -126,7 +126,7 @@ export default function EditFAQ() {
                     <FormLabel>Arabic answer</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="arabic name"
+                        placeholder="الاجابة بالعربي"
                         {...field}
                         className="resize-none min-h-[100px]"
                         dir="rtl"

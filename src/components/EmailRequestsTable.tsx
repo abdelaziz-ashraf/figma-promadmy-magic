@@ -8,13 +8,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Pagination,
   PaginationContent,
@@ -23,6 +21,14 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface EmailRequest {
   id: number;
@@ -33,13 +39,14 @@ interface EmailRequest {
 
 const mockRequests: EmailRequest[] = Array.from({ length: 10 }, (_, i) => ({
   id: i + 1,
-  email1: "Lindsey_Stroud@gmail.com",
-  email2: "Lindsey_Stroud@gmail.com",
+  email1: `email_address@example.com`,
+  email2: `contact${i + 1}_another_long_email@company.com`,
   status: i % 3 === 0 ? "New" : i % 3 === 1 ? "Contacted" : "Unanswered",
 }));
 
 export function EmailRequestsTable() {
   const [search, setSearch] = useState("");
+  const [requests, setRequests] = useState<EmailRequest[]>(mockRequests);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -54,6 +61,12 @@ export function EmailRequestsTable() {
     }
   };
 
+  const handleStatusChange = (id: number, newStatus: "New" | "Contacted" | "Unanswered") => {
+    setRequests(requests.map(request => 
+      request.id === id ? { ...request, status: newStatus } : request
+    ));
+  };
+
   return (
     <div className="space-y-4">
       <Input
@@ -63,23 +76,61 @@ export function EmailRequestsTable() {
         className="max-w-sm"
       />
 
-      <div className="rounded-md border overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Email</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {mockRequests.map((request) => (
-              <TableRow key={request.id}>
-                <TableCell>{request.email1}</TableCell>
-                <TableCell>
-                  <Select defaultValue={request.status}>
-                    <SelectTrigger className={`w-[140px] ${getStatusColor(request.status)}`}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {requests.map((request) => (
+          <div 
+            key={request.id} 
+            className="w-full bg-white"
+            style={{
+              borderTopLeftRadius: '0px',
+              borderTopRightRadius: '0px',
+              borderBottomLeftRadius: '8px',
+              borderBottomRightRadius: '8px',
+              borderTop: 'none',
+              borderLeft: '1px solid #e5e7eb',
+              borderRight: '1px solid #e5e7eb',
+              borderBottom: '1px solid #e5e7eb',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1)'
+            }}
+          >
+            <div className="p-2">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="text-left hover:text-blue-600 cursor-pointer text-sm">
+                        {request.email1}
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Email Address</DialogTitle>
+                        <DialogDescription>
+                          Full email address:
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="p-4 bg-gray-50 rounded-md">
+                        <p className="font-mono text-sm break-all">{request.email1}</p>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+                <div className="ml-3">
+                  <Select 
+                    value={request.status} 
+                    onValueChange={(value: "New" | "Contacted" | "Unanswered") => 
+                      handleStatusChange(request.id, value)
+                    }
+                  >
+                    <SelectTrigger 
+                      className={`w-[100px] h-7 text-xs ${getStatusColor(request.status)} border`}
+                      style={{
+                        backgroundColor: request.status === 'New' ? '#f0fdf4' : 
+                                       request.status === 'Contacted' ? '#eff6ff' : '#fefce8',
+                        borderColor: request.status === 'New' ? '#22c55e' : 
+                                    request.status === 'Contacted' ? '#3b82f6' : '#eab308'
+                      }}
+                    >
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -94,30 +145,11 @@ export function EmailRequestsTable() {
                       </SelectItem>
                     </SelectContent>
                   </Select>
-                </TableCell>
-                <TableCell>{request.email2}</TableCell>
-                <TableCell>
-                  <Select defaultValue={request.status}>
-                    <SelectTrigger className={`w-[140px] ${getStatusColor(request.status)}`}>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="New" className="text-green-600">
-                        New
-                      </SelectItem>
-                      <SelectItem value="Contacted" className="text-blue-600">
-                        Contacted
-                      </SelectItem>
-                      <SelectItem value="Unanswered" className="text-yellow-600">
-                        Unanswered
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
       <Pagination>

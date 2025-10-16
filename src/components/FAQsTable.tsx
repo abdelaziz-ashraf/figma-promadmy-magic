@@ -19,6 +19,17 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface FAQ {
   id: number;
@@ -40,6 +51,11 @@ export function FAQsTable() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [faqs, setFaqs] = useState<FAQ[]>(mockFAQs);
+
+  const handleDeleteFAQ = (id: number) => {
+    setFaqs(faqs.filter(faq => faq.id !== id));
+  };
 
   return (
     <div className="space-y-4">
@@ -70,7 +86,7 @@ export function FAQsTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {mockFAQs.map((faq) => (
+            {faqs.map((faq) => (
               <TableRow key={faq.id}>
                 <TableCell className="max-w-[200px] truncate">
                   {faq.englishQuestion}
@@ -93,9 +109,30 @@ export function FAQsTable() {
                     >
                       <Pencil className="h-4 w-4 text-blue-500" />
                     </Button>
-                    <Button variant="ghost" size="icon">
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Are you sure you want to delete this FAQ? This action cannot be undone.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleDeleteFAQ(faq.id)}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            Delete
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </TableCell>
               </TableRow>
