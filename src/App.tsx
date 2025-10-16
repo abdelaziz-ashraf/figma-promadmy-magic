@@ -21,6 +21,16 @@ import EditFAQ from "./pages/EditFAQ";
 import Testimonials from "./pages/Testimonials";
 import ContactRequests from "./pages/ContactRequests";
 import EmailRequests from "./pages/EmailRequests";
+import AcademyInfo from "./pages/AcademyInfo";
+import FreeVideos from "./pages/FreeVideos";
+import AddFreeVideo from "./pages/AddFreeVideo";
+import EditFreeVideo from "./pages/EditFreeVideo";
+import Gallery from "./pages/Gallery";
+import AddGallery from "./pages/AddGallery";
+import EditGallery from "./pages/EditGallery";
+import FreeArticles from "./pages/FreeArticles";
+import AddFreeArticle from "./pages/AddFreeArticle";
+import EditFreeArticle from "./pages/EditFreeArticle";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,6 +60,16 @@ const App = () => (
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/contact-requests" element={<ContactRequests />} />
           <Route path="/email-requests" element={<EmailRequests />} />
+          <Route path="/academy-info" element={<AcademyInfo />} />
+          <Route path="/free-videos" element={<FreeVideos />} />
+          <Route path="/free-videos/add" element={<AddFreeVideo />} />
+          <Route path="/free-videos/edit/:id" element={<EditFreeVideo />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/gallery/add" element={<AddGallery />} />
+          <Route path="/gallery/edit/:id" element={<EditGallery />} />
+          <Route path="/free-articles" element={<FreeArticles />} />
+          <Route path="/free-articles/add" element={<AddFreeArticle />} />
+          <Route path="/free-articles/edit/:id" element={<EditFreeArticle />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
