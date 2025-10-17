@@ -45,34 +45,34 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/instructor" element={<Instructor />} />
-          <Route path="/instructor/add" element={<AddInstructor />} />
-          <Route path="/instructor/edit/:id" element={<EditInstructor />} />
-          <Route path="/categorys" element={<Category />} />
-          <Route path="/categorys/add" element={<AddCategory />} />
-          <Route path="/categorys/edit/:id" element={<EditCategory />} />
-          <Route path="/courses" element={<Courses />} />
-          <Route path="/accreditations" element={<Accreditations />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/services/add" element={<AddServices />} />
-          <Route path="/services/edit/:id" element={<EditServices />} />
-          <Route path="/faqs" element={<FAQs />} />
-          <Route path="/faqs/add" element={<AddFAQ />} />
-          <Route path="/faqs/edit/:id" element={<EditFAQ />} />
-          <Route path="/testimonials" element={<Testimonials />} />
-          <Route path="/contact-requests" element={<ContactRequests />} />
-          <Route path="/email-requests" element={<EmailRequests />} />
-          <Route path="/academy-info" element={<AcademyInfo />} />
-          <Route path="/free-videos" element={<FreeVideos />} />
-          <Route path="/free-videos/add" element={<AddFreeVideo />} />
-          <Route path="/free-videos/edit/:id" element={<EditFreeVideo />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/gallery/add" element={<AddGallery />} />
-          <Route path="/gallery/edit/:id" element={<EditGallery />} />
-          <Route path="/free-articles" element={<FreeArticles />} />
-          <Route path="/free-articles/add" element={<AddFreeArticle />} />
-          <Route path="/free-articles/edit/:id" element={<EditFreeArticle />} />
+          <Route path="/admin/" element={<Dashboard />} />
+          <Route path="/admin/instructor" element={<Instructor />} />
+          <Route path="/admin/instructor/add" element={<AddInstructor />} />
+          <Route path="/admin/instructor/edit/:id" element={<EditInstructor />} />
+          <Route path="/admin/categorys" element={<Category />} />
+          <Route path="/admin/categorys/add" element={<AddCategory />} />
+          <Route path="/admin/categorys/edit/:id" element={<EditCategory />} />
+          <Route path="/admin/courses" element={<Courses />} />
+          <Route path="/admin/accreditations" element={<Accreditations />} />
+          <Route path="/admin/services" element={<Services />} />
+          <Route path="/admin/services/add" element={<AddServices />} />
+          <Route path="/admin/services/edit/:id" element={<EditServices />} />
+          <Route path="/admin/faqs" element={<FAQs />} />
+          <Route path="/admin/faqs/add" element={<AddFAQ />} />
+          <Route path="/admin/faqs/edit/:id" element={<EditFAQ />} />
+          <Route path="/admin/testimonials" element={<Testimonials />} />
+          <Route path="/admin/contact-requests" element={<ContactRequests />} />
+          <Route path="/admin/email-requests" element={<EmailRequests />} />
+          <Route path="/admin/academy-info" element={<AcademyInfo />} />
+          <Route path="/admin/free-videos" element={<FreeVideos />} />
+          <Route path="/admin/free-videos/add" element={<AddFreeVideo />} />
+          <Route path="/admin/free-videos/edit/:id" element={<EditFreeVideo />} />
+          <Route path="/admin/gallery" element={<Gallery />} />
+          <Route path="/admin/gallery/add" element={<AddGallery />} />
+          <Route path="/admin/gallery/edit/:id" element={<EditGallery />} />
+          <Route path="/admin/free-articles" element={<FreeArticles />} />
+          <Route path="/admin/free-articles/add" element={<AddFreeArticle />} />
+          <Route path="/admin/free-articles/edit/:id" element={<EditFreeArticle />} />
           
           {/* Instructor Routes */}
           <Route path="/instructor" element={<InstructorDashboard />} />
