@@ -32,6 +32,9 @@ import FreeArticles from "./pages/FreeArticles";
 import AddFreeArticle from "./pages/AddFreeArticle";
 import EditFreeArticle from "./pages/EditFreeArticle";
 import NotFound from "./pages/NotFound";
+import InstructorDashboard from "./pages/instructor/InstructorDashboard";
+import InstructorCourses from "./pages/instructor/InstructorCourses";
+import AddInstructorCourse from "./pages/instructor/AddInstructorCourse";
 
 const queryClient = new QueryClient();
 
@@ -70,6 +73,12 @@ const App = () => (
           <Route path="/free-articles" element={<FreeArticles />} />
           <Route path="/free-articles/add" element={<AddFreeArticle />} />
           <Route path="/free-articles/edit/:id" element={<EditFreeArticle />} />
+          
+          {/* Instructor Routes */}
+          <Route path="/instructor" element={<InstructorDashboard />} />
+          <Route path="/instructor/courses" element={<InstructorCourses />} />
+          <Route path="/instructor/courses/add" element={<AddInstructorCourse />} />
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
