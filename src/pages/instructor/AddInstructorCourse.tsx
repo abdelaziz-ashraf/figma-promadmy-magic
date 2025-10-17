@@ -47,32 +47,30 @@ const AddInstructorCourse = () => {
 
         <div className="border rounded-lg p-6 max-w-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="arabicName">Arabic name</Label>
-                <Input
-                  id="arabicName"
-                  placeholder="arabic name"
-                  value={formData.arabicName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, arabicName: e.target.value })
-                  }
-                  required
-                />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="arabicName">Arabic name</Label>
+              <Input
+                id="arabicName"
+                placeholder="arabic name"
+                value={formData.arabicName}
+                onChange={(e) =>
+                  setFormData({ ...formData, arabicName: e.target.value })
+                }
+                required
+              />
+            </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="englishName">English name</Label>
-                <Input
-                  id="englishName"
-                  placeholder="english name"
-                  value={formData.englishName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, englishName: e.target.value })
-                  }
-                  required
-                />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="englishName">English name</Label>
+              <Input
+                id="englishName"
+                placeholder="english name"
+                value={formData.englishName}
+                onChange={(e) =>
+                  setFormData({ ...formData, englishName: e.target.value })
+                }
+                required
+              />
             </div>
 
             <div className="space-y-2">

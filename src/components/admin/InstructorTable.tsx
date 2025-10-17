@@ -259,7 +259,7 @@ export function InstructorTable() {
             </SelectContent>
           </Select>
         </div>
-        <Button className="w-full lg:w-auto" onClick={() => navigate("/instructor/add")}>
+        <Button className="w-full lg:w-auto" onClick={() => navigate("/admin/instructor/add")}>
           <Plus className="h-4 w-4 mr-2" />
           Add instructor
         </Button>
@@ -334,7 +334,7 @@ export function InstructorTable() {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                        onClick={() => navigate(`/instructor/edit/${instructor.id}`)}
+                        onClick={() => navigate(`/admin/instructor/edit/${instructor.id}`)}
                       >
                         <Edit2 className="h-4 w-4" />
                       </Button>

@@ -74,7 +74,7 @@ export function FAQsTable() {
           className="max-w-sm"
         />
         <Button
-          onClick={() => navigate("/faqs/add")}
+          onClick={() => navigate("/admin/faqs/add")}
           className="bg-[#C4A047] hover:bg-[#B39040] text-white"
         >
           Add FAQs
@@ -112,7 +112,7 @@ export function FAQsTable() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => navigate(`/faqs/edit/${faq.id}`)}
+                      onClick={() => navigate(`/admin/faqs/edit/${faq.id}`)}
                     >
                       <Pencil className="h-4 w-4 text-blue-500" />
                     </Button>

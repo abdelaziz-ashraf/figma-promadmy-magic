@@ -86,7 +86,7 @@ export const FreeArticlesTable = () => {
             className="pl-10"
           />
         </div>
-        <Button onClick={() => navigate("/free-articles/add")} className="bg-primary">
+        <Button onClick={() => navigate("/admin/free-articles/add")} className="bg-primary">
           <Plus className="h-4 w-4 mr-2" />
           Add Article
         </Button>
@@ -137,7 +137,7 @@ export const FreeArticlesTable = () => {
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => navigate(`/free-articles/edit/${article.id}`)}
+                      onClick={() => navigate(`/admin/free-articles/edit/${article.id}`)}
                     >
                       <Edit className="h-4 w-4 text-blue-500" />
                     </Button>

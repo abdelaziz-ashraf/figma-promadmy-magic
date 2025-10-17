@@ -76,7 +76,7 @@ export function ServicesTable() {
           />
         </div>
         <Button
-          onClick={() => navigate("/services/add")}
+          onClick={() => navigate("/admin/services/add")}
           className="w-full sm:w-auto bg-[#C4A962] hover:bg-[#B39952] text-white"
         >
           <Plus className="mr-2 h-4 w-4" />
@@ -112,7 +112,7 @@ export function ServicesTable() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => navigate(`/services/edit/${service.id}`)}
+                        onClick={() => navigate(`/admin/services/edit/${service.id}`)}
                         className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10"
                       >
                         <Edit className="h-4 w-4" />

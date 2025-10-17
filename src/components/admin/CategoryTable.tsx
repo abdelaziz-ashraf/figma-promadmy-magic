@@ -89,7 +89,7 @@ export function CategoryTable() {
         </div>
 
         <Button
-          onClick={() => navigate("/categorys/add")}
+          onClick={() => navigate("/admin/categorys/add")}
           className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2"
         >
           Add category
@@ -120,7 +120,7 @@ export function CategoryTable() {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10"
-                        onClick={() => navigate(`/categorys/edit/${category.id}`)}
+                        onClick={() => navigate(`/admin/categorys/edit/${category.id}`)}
                       >
                         <Edit2 className="h-4 w-4" />
                       </Button>

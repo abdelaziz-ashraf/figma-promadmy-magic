@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Bell, LayoutDashboard, GraduationCap } from "lucide-react";
+import { Bell, LayoutDashboard, GraduationCap, Menu, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface InstructorLayoutProps {
@@ -10,6 +11,7 @@ interface InstructorLayoutProps {
 
 export const InstructorLayout = ({ children }: InstructorLayoutProps) => {
   const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigation = [
     { name: "Dashboard", href: "/instructor", icon: LayoutDashboard },
@@ -18,27 +20,43 @@ export const InstructorLayout = ({ children }: InstructorLayoutProps) => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b bg-card">
-        <div className="flex h-16 items-center px-6 justify-between">
-          <div className="flex items-center gap-4">
-            <img src="/pma-logo.png" alt="PMA" className="h-8" />
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="relative">
-              <Bell className="h-5 w-5 text-muted-foreground" />
-              <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-destructive text-[10px] text-destructive-foreground flex items-center justify-center">
-                6
-              </span>
-            </button>
-          </div>
-        </div>
-      </header>
+      {/* Mobile sidebar backdrop */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
-      <div className="flex">
-        {/* Sidebar */}
-        <aside className="w-48 border-r bg-card min-h-[calc(100vh-4rem)]">
-          <div className="p-4 space-y-2">
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          "fixed top-0 left-0 z-50 h-full w-64 bg-sidebar border-r border-sidebar-border transition-transform duration-300 lg:translate-x-0",
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        <div className="flex flex-col h-full">
+          {/* Logo */}
+          <div className="p-3 border-b border-sidebar-border flex items-center justify-between">
+            <div className="flex items-center">
+              <img 
+                src="/pma-logo.png" 
+                alt="PMA Logo" 
+                className="h-12 w-auto"
+              />
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 overflow-y-auto p-4">
             <div className="mb-4">
               <Input
                 type="search"
@@ -46,7 +64,7 @@ export const InstructorLayout = ({ children }: InstructorLayoutProps) => {
                 className="h-9 text-sm"
               />
             </div>
-            <nav className="space-y-1">
+            <div className="space-y-1">
               {navigation.map((item) => {
                 const isActive = location.pathname === item.href;
                 return (
@@ -59,18 +77,45 @@ export const InstructorLayout = ({ children }: InstructorLayoutProps) => {
                         ? "bg-[hsl(43,74%,49%)] text-white"
                         : "text-foreground hover:bg-accent"
                     )}
+                    onClick={() => setSidebarOpen(false)}
                   >
                     <item.icon className="h-4 w-4" />
                     {item.name}
                   </Link>
                 );
               })}
-            </nav>
-          </div>
-        </aside>
+            </div>
+          </nav>
+        </div>
+      </aside>
 
-        {/* Main Content */}
-        <main className="flex-1 p-6">{children}</main>
+      {/* Main content */}
+      <div className="lg:pl-64">
+        {/* Header */}
+        <header className="sticky top-0 z-30 bg-background border-b border-border px-4 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden"
+              onClick={() => setSidebarOpen(true)}
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+            
+            <div className="flex-1" />
+            
+            <Button variant="ghost" size="icon" className="relative">
+              <Bell className="h-5 w-5" />
+              <span className="absolute top-1 right-1 h-2 w-2 bg-destructive rounded-full" />
+            </Button>
+          </div>
+        </header>
+
+        {/* Page content */}
+        <main className="p-4 lg:p-8">
+          {children}
+        </main>
       </div>
     </div>
   );

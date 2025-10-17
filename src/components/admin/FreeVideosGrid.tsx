@@ -72,7 +72,7 @@ export const FreeVideosGrid = () => {
             className="pl-10"
           />
         </div>
-        <Button onClick={() => navigate("/free-videos/add")} className="bg-primary">
+        <Button onClick={() => navigate("/admin/free-videos/add")} className="bg-primary">
           <Plus className="h-4 w-4 mr-2" />
           Add video
         </Button>
@@ -110,7 +110,7 @@ export const FreeVideosGrid = () => {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => navigate(`/free-videos/edit/${video.id}`)}
+                    onClick={() => navigate(`/admin/free-videos/edit/${video.id}`)}
                   >
                     <Edit className="h-4 w-4 text-blue-500" />
                   </Button>

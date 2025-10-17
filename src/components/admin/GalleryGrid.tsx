@@ -73,7 +73,7 @@ export const GalleryGrid = () => {
             className="pl-10"
           />
         </div>
-        <Button onClick={() => navigate("/gallery/add")} className="bg-primary">
+        <Button onClick={() => navigate("/admin/gallery/add")} className="bg-primary">
           <Plus className="h-4 w-4 mr-2" />
           Add to gallery
         </Button>
@@ -107,7 +107,7 @@ export const GalleryGrid = () => {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => navigate(`/gallery/edit/${item.id}`)}
+                    onClick={() => navigate(`/admin/gallery/edit/${item.id}`)}
                   >
                     <Edit className="h-4 w-4 text-blue-500" />
                   </Button>

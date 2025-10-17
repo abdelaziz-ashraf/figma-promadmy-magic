@@ -27,20 +27,20 @@ interface LayoutProps {
 }
 
 const navigation = [
-  { name: "Dashboard", href: "/", icon: LayoutDashboard },
-  { name: "Instructor", href: "/instructor", icon: Users },
-  { name: "Categories", href: "/categorys", icon: Folder },
-  { name: "Courses", href: "/courses", icon: BookOpen },
-  { name: "Accreditations", href: "/accreditations", icon: Award },
-  { name: "Services", href: "/services", icon: Settings },
-  { name: "FAQs", href: "/faqs", icon: HelpCircle },
-  { name: "Testimonials", href: "/testimonials", icon: MessageSquare },
-  { name: "Contact us requests", href: "/contact-requests", icon: Mail },
-  { name: "Emails requests", href: "/email-requests", icon: Mail },
-  { name: "Academy info", href: "/academy-info", icon: Info },
-  { name: "Free videos", href: "/free-videos", icon: Video },
-  { name: "Free articles", href: "/free-articles", icon: FileText },
-  { name: "Gallery", href: "/gallery", icon: ImageIcon },
+  { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
+  { name: "Instructor", href: "/admin/instructor", icon: Users },
+  { name: "Categories", href: "/admin/categorys", icon: Folder },
+  { name: "Courses", href: "/admin/courses", icon: BookOpen },
+  { name: "Accreditations", href: "/admin/accreditations", icon: Award },
+  { name: "Services", href: "/admin/services", icon: Settings },
+  { name: "FAQs", href: "/admin/faqs", icon: HelpCircle },
+  { name: "Testimonials", href: "/admin/testimonials", icon: MessageSquare },
+  { name: "Contact us requests", href: "/admin/contact-requests", icon: Mail },
+  { name: "Emails requests", href: "/admin/email-requests", icon: Mail },
+  { name: "Academy info", href: "/admin/academy-info", icon: Info },
+  { name: "Free videos", href: "/admin/free-videos", icon: Video },
+  { name: "Free articles", href: "/admin/free-articles", icon: FileText },
+  { name: "Gallery", href: "/admin/gallery", icon: ImageIcon },
 ];
 
 export function Layout({ children }: LayoutProps) {
