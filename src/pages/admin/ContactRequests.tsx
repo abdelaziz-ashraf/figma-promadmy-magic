@@ -1,5 +1,5 @@
-import { Layout } from "@/components/Layout";
-import { ContactRequestsTable } from "@/components/ContactRequestsTable";
+import { Layout } from "@/components/admin/Layout";
+import { ContactRequestsTable } from "@/components/admin/ContactRequestsTable";
 
 export default function ContactRequests() {
   return (

@@ -1,22 +1,23 @@
-import { Layout } from "@/components/Layout";
+import { Layout } from "@/components/admin/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const AddFreeArticle = () => {
+const EditFreeArticle = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { id } = useParams();
   const [formData, setFormData] = useState({
-    name: "",
-    article: "",
+    name: "Lindsey Stroud",
+    article: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
     image: null as File | null,
-    status: "draft",
+    status: "published",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -24,7 +25,7 @@ const AddFreeArticle = () => {
     console.log("Form submitted:", formData);
     toast({
       title: "Success",
-      description: "Free article has been added successfully.",
+      description: "Free article has been updated successfully.",
     });
     navigate("/free-articles");
   };
@@ -40,7 +41,7 @@ const AddFreeArticle = () => {
           >
             <ChevronLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-3xl font-bold">Add Free Article</h1>
+          <h1 className="text-3xl font-bold">Edit Free Article</h1>
         </div>
 
         <form onSubmit={handleSubmit} className="bg-card rounded-lg shadow-sm p-6 max-w-4xl">
@@ -138,4 +139,4 @@ const AddFreeArticle = () => {
   );
 };
 
-export default AddFreeArticle;
+export default EditFreeArticle;

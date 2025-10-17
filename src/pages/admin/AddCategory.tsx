@@ -1,9 +1,9 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { ArrowLeft } from "lucide-react";
-import { Layout } from "@/components/Layout";
+import { Layout } from "@/components/admin/Layout";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -23,44 +23,26 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-// Mock data - in real app, this would come from API
-const mockCategories = Array.from({ length: 50 }, (_, i) => ({
-  id: i + 1,
-  arabicName: "برمجة",
-  englishName: "Programming",
-  courses: [50, 80, 100, 20, 12, 12, 12, 12, 12, 12][i % 10],
-}));
-
-const EditCategory = () => {
+const AddCategory = () => {
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();
   const { toast } = useToast();
-
-  // Find the category to edit
-  const categoryToEdit = mockCategories.find(cat => cat.id === parseInt(id || "0"));
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      arabicName: categoryToEdit?.arabicName || "",
-      englishName: categoryToEdit?.englishName || "",
+      arabicName: "",
+      englishName: "",
     },
   });
 
   const onSubmit = (data: FormValues) => {
-    console.log("Editing category:", data);
+    console.log(data);
     toast({
       title: "Success",
-      description: "Category updated successfully",
+      description: "Category added successfully",
     });
     navigate("/categorys");
   };
-
-  // If category not found, redirect to categories list
-  if (!categoryToEdit) {
-    navigate("/categorys");
-    return null;
-  }
 
   return (
     <Layout>
@@ -73,7 +55,7 @@ const EditCategory = () => {
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-3xl font-bold">Edit Category</h1>
+          <h1 className="text-3xl font-bold">Add Category</h1>
         </div>
 
         <div className="bg-card border rounded-lg p-6">
@@ -114,7 +96,7 @@ const EditCategory = () => {
                   type="submit"
                   className="bg-primary hover:bg-primary/90 text-primary-foreground"
                 >
-                  Update
+                  Save
                 </Button>
                 <Button
                   type="button"
@@ -132,4 +114,4 @@ const EditCategory = () => {
   );
 };
 
-export default EditCategory;
+export default AddCategory;

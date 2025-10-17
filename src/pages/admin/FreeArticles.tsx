@@ -1,5 +1,5 @@
-import { Layout } from "@/components/Layout";
-import { FreeArticlesTable } from "@/components/FreeArticlesTable";
+import { Layout } from "@/components/admin/Layout";
+import { FreeArticlesTable } from "@/components/admin/FreeArticlesTable";
 
 const FreeArticles = () => {
   return (

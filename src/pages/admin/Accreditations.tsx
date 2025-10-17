@@ -1,5 +1,5 @@
-import { Layout } from "@/components/Layout";
-import AccreditationsGrid from "@/components/AccreditationsGrid";
+import { Layout } from "@/components/admin/Layout";
+import AccreditationsGrid from "@/components/admin/AccreditationsGrid";
 
 const Accreditations = () => {
   return (

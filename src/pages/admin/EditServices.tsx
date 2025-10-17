@@ -13,8 +13,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Layout } from "@/components/Layout";
-import { IconPicker } from "@/components/IconPicker";
+import { Layout } from "@/components/admin/Layout";
+import { IconPicker } from "@/components/admin/IconPicker";
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({

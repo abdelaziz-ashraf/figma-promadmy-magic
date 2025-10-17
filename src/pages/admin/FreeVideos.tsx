@@ -1,5 +1,5 @@
-import { Layout } from "@/components/Layout";
-import { FreeVideosGrid } from "@/components/FreeVideosGrid";
+import { Layout } from "@/components/admin/Layout";
+import { FreeVideosGrid } from "@/components/admin/FreeVideosGrid";
 
 const FreeVideos = () => {
   return (

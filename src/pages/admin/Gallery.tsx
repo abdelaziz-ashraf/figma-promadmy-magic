@@ -1,5 +1,5 @@
-import { Layout } from "@/components/Layout";
-import { GalleryGrid } from "@/components/GalleryGrid";
+import { Layout } from "@/components/admin/Layout";
+import { GalleryGrid } from "@/components/admin/GalleryGrid";
 
 const Gallery = () => {
   return (

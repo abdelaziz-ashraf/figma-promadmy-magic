@@ -1,5 +1,5 @@
-import { Layout } from "@/components/Layout";
-import { InstructorTable } from "@/components/InstructorTable";
+import { Layout } from "@/components/admin/Layout";
+import { InstructorTable } from "@/components/admin/InstructorTable";
 
 const Instructor = () => {
   return (

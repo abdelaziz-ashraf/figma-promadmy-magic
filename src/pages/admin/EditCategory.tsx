@@ -1,8 +1,9 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { ArrowLeft } from "lucide-react";
+import { Layout } from "@/components/admin/Layout";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,39 +14,53 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Layout } from "@/components/Layout";
-import { IconPicker } from "@/components/IconPicker";
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   arabicName: z.string().min(1, "Arabic name is required"),
   englishName: z.string().min(1, "English name is required"),
-  icon: z.string().min(1, "Icon is required"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-const AddServices = () => {
+// Mock data - in real app, this would come from API
+const mockCategories = Array.from({ length: 50 }, (_, i) => ({
+  id: i + 1,
+  arabicName: "برمجة",
+  englishName: "Programming",
+  courses: [50, 80, 100, 20, 12, 12, 12, 12, 12, 12][i % 10],
+}));
+
+const EditCategory = () => {
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
   const { toast } = useToast();
+
+  // Find the category to edit
+  const categoryToEdit = mockCategories.find(cat => cat.id === parseInt(id || "0"));
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      arabicName: "",
-      englishName: "",
-      icon: "",
+      arabicName: categoryToEdit?.arabicName || "",
+      englishName: categoryToEdit?.englishName || "",
     },
   });
 
   const onSubmit = (data: FormValues) => {
-    console.log(data);
+    console.log("Editing category:", data);
     toast({
       title: "Success",
-      description: "Service added successfully",
+      description: "Category updated successfully",
     });
-    navigate("/services");
+    navigate("/categorys");
   };
+
+  // If category not found, redirect to categories list
+  if (!categoryToEdit) {
+    navigate("/categorys");
+    return null;
+  }
 
   return (
     <Layout>
@@ -54,11 +69,11 @@ const AddServices = () => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate("/services")}
+            onClick={() => navigate("/categorys")}
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-3xl font-bold">Add Service</h1>
+          <h1 className="text-3xl font-bold">Edit Category</h1>
         </div>
 
         <div className="bg-card border rounded-lg p-6">
@@ -94,34 +109,17 @@ const AddServices = () => {
                 />
               </div>
 
-              <FormField
-                control={form.control}
-                name="icon"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Icon</FormLabel>
-                    <FormControl>
-                      <IconPicker
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="flex gap-4">
+              <div className="flex gap-3">
                 <Button
                   type="submit"
-                  className="bg-[#C4A962] hover:bg-[#B39952] text-white"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground"
                 >
-                  Save
+                  Update
                 </Button>
                 <Button
                   type="button"
                   variant="destructive"
-                  onClick={() => navigate("/services")}
+                  onClick={() => navigate("/categorys")}
                 >
                   Cancel
                 </Button>
@@ -134,4 +132,4 @@ const AddServices = () => {
   );
 };
 
-export default AddServices;
+export default EditCategory;

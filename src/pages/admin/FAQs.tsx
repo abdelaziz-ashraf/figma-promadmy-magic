@@ -1,5 +1,5 @@
-import { Layout } from "@/components/Layout";
-import { FAQsTable } from "@/components/FAQsTable";
+import { Layout } from "@/components/admin/Layout";
+import { FAQsTable } from "@/components/admin/FAQsTable";
 
 export default function FAQs() {
   return (

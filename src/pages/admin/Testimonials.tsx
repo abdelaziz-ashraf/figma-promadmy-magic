@@ -1,5 +1,5 @@
-import { Layout } from "@/components/Layout";
-import { TestimonialsTable } from "@/components/TestimonialsTable";
+import { Layout } from "@/components/admin/Layout";
+import { TestimonialsTable } from "@/components/admin/TestimonialsTable";
 
 export default function Testimonials() {
   return (

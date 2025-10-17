@@ -1,5 +1,5 @@
-import { Layout } from "@/components/Layout";
-import { EmailRequestsTable } from "@/components/EmailRequestsTable";
+import { Layout } from "@/components/admin/Layout";
+import { EmailRequestsTable } from "@/components/admin/EmailRequestsTable";
 
 export default function EmailRequests() {
   return (

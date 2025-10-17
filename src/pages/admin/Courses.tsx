@@ -1,5 +1,5 @@
-import { Layout } from "@/components/Layout";
-import CoursesTable from "@/components/CoursesTable";
+import { Layout } from "@/components/admin/Layout";
+import CoursesTable from "@/components/admin/CoursesTable";
 
 export default function Courses() {
   return (

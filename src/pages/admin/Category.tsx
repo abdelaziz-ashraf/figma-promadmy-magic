@@ -1,5 +1,5 @@
-import { Layout } from "@/components/Layout";
-import { CategoryTable } from "@/components/CategoryTable";
+import { Layout } from "@/components/admin/Layout";
+import { CategoryTable } from "@/components/admin/CategoryTable";
 
 const Category = () => {
   return (

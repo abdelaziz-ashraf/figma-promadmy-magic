@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { ArrowLeft } from "lucide-react";
-import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,16 +13,19 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Layout } from "@/components/admin/Layout";
+import { IconPicker } from "@/components/admin/IconPicker";
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   arabicName: z.string().min(1, "Arabic name is required"),
   englishName: z.string().min(1, "English name is required"),
+  icon: z.string().min(1, "Icon is required"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-const AddCategory = () => {
+const AddServices = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -32,6 +34,7 @@ const AddCategory = () => {
     defaultValues: {
       arabicName: "",
       englishName: "",
+      icon: "",
     },
   });
 
@@ -39,9 +42,9 @@ const AddCategory = () => {
     console.log(data);
     toast({
       title: "Success",
-      description: "Category added successfully",
+      description: "Service added successfully",
     });
-    navigate("/categorys");
+    navigate("/services");
   };
 
   return (
@@ -51,11 +54,11 @@ const AddCategory = () => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate("/categorys")}
+            onClick={() => navigate("/services")}
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-3xl font-bold">Add Category</h1>
+          <h1 className="text-3xl font-bold">Add Service</h1>
         </div>
 
         <div className="bg-card border rounded-lg p-6">
@@ -91,17 +94,34 @@ const AddCategory = () => {
                 />
               </div>
 
-              <div className="flex gap-3">
+              <FormField
+                control={form.control}
+                name="icon"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Icon</FormLabel>
+                    <FormControl>
+                      <IconPicker
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="flex gap-4">
                 <Button
                   type="submit"
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                  className="bg-[#C4A962] hover:bg-[#B39952] text-white"
                 >
                   Save
                 </Button>
                 <Button
                   type="button"
                   variant="destructive"
-                  onClick={() => navigate("/categorys")}
+                  onClick={() => navigate("/services")}
                 >
                   Cancel
                 </Button>
@@ -114,4 +134,4 @@ const AddCategory = () => {
   );
 };
 
-export default AddCategory;
+export default AddServices;

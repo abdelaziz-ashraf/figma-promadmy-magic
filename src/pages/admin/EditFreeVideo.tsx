@@ -1,20 +1,21 @@
-import { Layout } from "@/components/Layout";
+import { Layout } from "@/components/admin/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { ChevronLeft, Link as LinkIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const AddFreeVideo = () => {
+const EditFreeVideo = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { id } = useParams();
   const [formData, setFormData] = useState({
-    name: "",
-    link: "",
-    show: true, // مفعل تلقائياً في الإضافة
+    name: "Flutter Advanced",
+    link: "https://example.com/video",
+    show: true,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -22,7 +23,7 @@ const AddFreeVideo = () => {
     console.log("Form submitted:", formData);
     toast({
       title: "Success",
-      description: "Free video has been added successfully.",
+      description: "Free video has been updated successfully.",
     });
     navigate("/free-videos");
   };
@@ -38,7 +39,7 @@ const AddFreeVideo = () => {
           >
             <ChevronLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-3xl font-bold">Add Free Video</h1>
+          <h1 className="text-3xl font-bold">Edit Free Video</h1>
         </div>
 
         <form onSubmit={handleSubmit} className="bg-card rounded-lg shadow-sm p-6 max-w-4xl">
@@ -102,4 +103,4 @@ const AddFreeVideo = () => {
   );
 };
 
-export default AddFreeVideo;
+export default EditFreeVideo;

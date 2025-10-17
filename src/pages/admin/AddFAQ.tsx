@@ -1,9 +1,9 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { ArrowLeft } from "lucide-react";
-import { Layout } from "@/components/Layout";
+import { Layout } from "@/components/admin/Layout";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -23,25 +23,24 @@ const formSchema = z.object({
   arabicAnswer: z.string().min(1, "Arabic answer is required"),
 });
 
-export default function EditFAQ() {
-  const { id } = useParams();
+export default function AddFAQ() {
   const navigate = useNavigate();
   const { toast } = useToast();
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      englishQuestion: "Is there a certificate after completing the course?",
-      arabicQuestion: "هل هناك شهادة بعد إتمام الدورة؟",
-      englishAnswer: "Yes, a certificate is provided after successfully completing the course.",
-      arabicAnswer: "نعم يتم منح شهادة بعد إتمام الدورة بنجاح.",
+      englishQuestion: "",
+      arabicQuestion: "",
+      englishAnswer: "",
+      arabicAnswer: "",
     },
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
     toast({
-      title: "FAQ updated successfully",
+      title: "FAQ added successfully",
     });
     navigate("/faqs");
   };
@@ -57,7 +56,7 @@ export default function EditFAQ() {
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-3xl font-bold">Edit FAQ</h1>
+          <h1 className="text-3xl font-bold">Add FAQ</h1>
         </div>
 
         <div className="max-w-2xl bg-card p-6 rounded-lg border">
