@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Plus, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Plus, ChevronLeft, ChevronRight, Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -133,6 +133,7 @@ export const InstructorCoursesTable = () => {
                 <TableHead className="text-foreground font-medium">Subscription duration</TableHead>
                 <TableHead className="text-foreground font-medium">Status</TableHead>
                 <TableHead className="text-foreground font-medium">Students</TableHead>
+                <TableHead className="text-foreground font-medium">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -174,6 +175,15 @@ export const InstructorCoursesTable = () => {
                     </Select>
                   </TableCell>
                   <TableCell>{course.students}</TableCell>
+                  <TableCell>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => navigate(`/instructor/courses/${course.id}`)}
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

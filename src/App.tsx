@@ -35,6 +35,7 @@ import NotFound from "./pages/NotFound";
 import InstructorDashboard from "./pages/instructor/InstructorDashboard";
 import InstructorCourses from "./pages/instructor/InstructorCourses";
 import AddInstructorCourse from "./pages/instructor/AddInstructorCourse";
+import CourseDetails from "./pages/instructor/CourseDetails";
 
 const queryClient = new QueryClient();
 
@@ -78,6 +79,7 @@ const App = () => (
           <Route path="/instructor" element={<InstructorDashboard />} />
           <Route path="/instructor/courses" element={<InstructorCourses />} />
           <Route path="/instructor/courses/add" element={<AddInstructorCourse />} />
+          <Route path="/instructor/courses/:id" element={<CourseDetails />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
