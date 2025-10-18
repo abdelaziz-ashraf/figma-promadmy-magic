@@ -88,8 +88,7 @@ export function Layout({ children }: LayoutProps) {
           <nav className="flex-1 overflow-y-auto p-4">
             <ul className="space-y-1">
               {navigation.map((item) => {
-                const isActive = location.pathname === item.href || 
-                  (item.href !== "/" && location.pathname.startsWith(item.href));
+                const isActive = location.pathname === item.href;
                 return (
                   <li key={item.name}>
                     <Link
