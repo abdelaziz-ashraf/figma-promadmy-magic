@@ -7,6 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -23,6 +29,21 @@ const CourseDetails = () => {
   const { id } = useParams();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("curriculum");
+  const [currentSectionId, setCurrentSectionId] = useState<number | null>(null);
+  
+  // Dialog states
+  const [showSectionDialog, setShowSectionDialog] = useState(false);
+  const [showLectureDialog, setShowLectureDialog] = useState(false);
+  const [showAttachmentDialog, setShowAttachmentDialog] = useState(false);
+  const [showQuestionsDialog, setShowQuestionsDialog] = useState(false);
+  
+  // Form states
+  const [sectionTitle, setSectionTitle] = useState("");
+  const [lectureTitle, setLectureTitle] = useState("");
+  const [attachmentTitle, setAttachmentTitle] = useState("");
+  const [questionTitle, setQuestionTitle] = useState("");
+  const [answers, setAnswers] = useState(["", "", "", ""]);
+  const [correctAnswer, setCorrectAnswer] = useState(0);
   
   const [courseInfo, setCourseInfo] = useState({
     titleAr: "دورة البرمجة",
@@ -64,14 +85,77 @@ const CourseDetails = () => {
     });
   };
 
-  const addSection = () => {
+  const handleSaveSection = () => {
+    if (!sectionTitle.trim()) return;
     const newSection = {
       id: sections.length + 1,
-      title: `Section ${sections.length + 1}: New Section`,
+      title: sectionTitle,
       hasAttachment: false,
       items: []
     };
     setSections([...sections, newSection]);
+    setSectionTitle("");
+    setShowSectionDialog(false);
+    toast({ title: "Success", description: "Section added successfully" });
+  };
+
+  const handleSaveLecture = () => {
+    if (!lectureTitle.trim() || currentSectionId === null) return;
+    setSections(sections.map(section => {
+      if (section.id === currentSectionId) {
+        return {
+          ...section,
+          items: [...section.items, {
+            id: section.items.length + 1,
+            type: "lecture",
+            title: lectureTitle,
+            hasVideo: false,
+            canDelete: true
+          }]
+        };
+      }
+      return section;
+    }));
+    setLectureTitle("");
+    setShowLectureDialog(false);
+    toast({ title: "Success", description: "Lecture added successfully" });
+  };
+
+  const handleSaveAttachment = () => {
+    if (!attachmentTitle.trim() || currentSectionId === null) return;
+    setSections(sections.map(section => {
+      if (section.id === currentSectionId) {
+        return { ...section, hasAttachment: true };
+      }
+      return section;
+    }));
+    setAttachmentTitle("");
+    setShowAttachmentDialog(false);
+    toast({ title: "Success", description: "Attachment added successfully" });
+  };
+
+  const handleSaveQuestion = () => {
+    if (!questionTitle.trim() || currentSectionId === null) return;
+    setSections(sections.map(section => {
+      if (section.id === currentSectionId) {
+        return {
+          ...section,
+          items: [...section.items, {
+            id: section.items.length + 1,
+            type: "test",
+            title: questionTitle,
+            expanded: false,
+            questions: [`1: ${questionTitle}`]
+          }]
+        };
+      }
+      return section;
+    }));
+    setQuestionTitle("");
+    setAnswers(["", "", "", ""]);
+    setCorrectAnswer(0);
+    setShowQuestionsDialog(false);
+    toast({ title: "Success", description: "Question added successfully" });
   };
 
   return (
@@ -115,6 +199,10 @@ const CourseDetails = () => {
                       variant="outline"
                       size="sm"
                       className="text-xs"
+                      onClick={() => {
+                        setCurrentSectionId(section.id);
+                        setShowAttachmentDialog(true);
+                      }}
                     >
                       <FileText className="h-3 w-3 mr-1" />
                       {section.hasAttachment ? "Attachment" : "add Attachment"}
@@ -152,12 +240,17 @@ const CourseDetails = () => {
                                   <span className="text-sm">{item.title}</span>
                                   <HelpCircle className="h-3 w-3" />
                                 </div>
-                                <CollapsibleTrigger asChild>
-                                  <Button variant="outline" size="sm">
-                                    <Plus className="h-3 w-3 mr-1" />
-                                    Questions
-                                  </Button>
-                                </CollapsibleTrigger>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => {
+                                    setCurrentSectionId(section.id);
+                                    setShowQuestionsDialog(true);
+                                  }}
+                                >
+                                  <Plus className="h-3 w-3 mr-1" />
+                                  Questions
+                                </Button>
                               </div>
                               <CollapsibleContent>
                                 <div className="pl-6 pt-2">
@@ -178,11 +271,25 @@ const CourseDetails = () => {
                   <div className="space-y-2">
                     <p className="text-sm font-medium">Curriculum item</p>
                     <div className="flex gap-4">
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => {
+                          setCurrentSectionId(section.id);
+                          setShowLectureDialog(true);
+                        }}
+                      >
                         <Plus className="h-3 w-3 mr-1" />
                         Lecture
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => {
+                          setCurrentSectionId(section.id);
+                          setShowQuestionsDialog(true);
+                        }}
+                      >
                         <Plus className="h-3 w-3 mr-1" />
                         Test
                       </Button>
@@ -192,7 +299,7 @@ const CourseDetails = () => {
               ))}
 
               <Button
-                onClick={addSection}
+                onClick={() => setShowSectionDialog(true)}
                 className="bg-[hsl(43,74%,49%)] hover:bg-[hsl(43,74%,40%)] text-white"
               >
                 <Plus className="h-4 w-4 mr-1" />
@@ -378,6 +485,193 @@ const CourseDetails = () => {
             </div>
           </TabsContent>
         </Tabs>
+
+        {/* Add Section Dialog */}
+        <Dialog open={showSectionDialog} onOpenChange={setShowSectionDialog}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>New Section</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <Input
+                placeholder="Enter a title"
+                value={sectionTitle}
+                onChange={(e) => setSectionTitle(e.target.value)}
+              />
+              <div className="flex gap-3">
+                <Button
+                  onClick={handleSaveSection}
+                  className="bg-[hsl(43,74%,49%)] hover:bg-[hsl(43,74%,40%)] text-white flex-1"
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    setSectionTitle("");
+                    setShowSectionDialog(false);
+                  }}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Add Lecture Dialog */}
+        <Dialog open={showLectureDialog} onOpenChange={setShowLectureDialog}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>New Lecture</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <Input
+                placeholder="Enter a title"
+                value={lectureTitle}
+                onChange={(e) => setLectureTitle(e.target.value)}
+              />
+              <div className="space-y-2">
+                <Label>Upload Video</Label>
+                <div className="border rounded-lg p-3 flex items-center justify-between bg-muted/30">
+                  <Button variant="outline" size="sm">
+                    Choose a file
+                  </Button>
+                  <span className="text-sm text-muted-foreground">
+                    No file has been selected
+                  </span>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <Button
+                  onClick={handleSaveLecture}
+                  className="bg-[hsl(43,74%,49%)] hover:bg-[hsl(43,74%,40%)] text-white flex-1"
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    setLectureTitle("");
+                    setShowLectureDialog(false);
+                  }}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Add Attachment Dialog */}
+        <Dialog open={showAttachmentDialog} onOpenChange={setShowAttachmentDialog}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>New Attachment</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <Input
+                placeholder="Enter a title"
+                value={attachmentTitle}
+                onChange={(e) => setAttachmentTitle(e.target.value)}
+              />
+              <div className="space-y-2">
+                <Label>Upload Attachment</Label>
+                <div className="border rounded-lg p-3 flex items-center justify-between bg-muted/30">
+                  <Button variant="outline" size="sm">
+                    Choose a file
+                  </Button>
+                  <span className="text-sm text-muted-foreground">
+                    No file has been selected
+                  </span>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <Button
+                  onClick={handleSaveAttachment}
+                  className="bg-[hsl(43,74%,49%)] hover:bg-[hsl(43,74%,40%)] text-white flex-1"
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    setAttachmentTitle("");
+                    setShowAttachmentDialog(false);
+                  }}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Add Questions Dialog */}
+        <Dialog open={showQuestionsDialog} onOpenChange={setShowQuestionsDialog}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Questions</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <Input
+                placeholder="Enter a title"
+                value={questionTitle}
+                onChange={(e) => setQuestionTitle(e.target.value)}
+              />
+              <div className="space-y-3">
+                <Label>Answers</Label>
+                {answers.map((answer, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <RadioGroup
+                      value={correctAnswer.toString()}
+                      onValueChange={(value) => setCorrectAnswer(parseInt(value))}
+                    >
+                      <RadioGroupItem
+                        value={index.toString()}
+                        id={`answer-${index}`}
+                        className="data-[state=checked]:border-[hsl(43,74%,49%)] data-[state=checked]:bg-[hsl(43,74%,49%)]"
+                      />
+                    </RadioGroup>
+                    <Input
+                      placeholder="Add an answers"
+                      value={answer}
+                      onChange={(e) => {
+                        const newAnswers = [...answers];
+                        newAnswers[index] = e.target.value;
+                        setAnswers(newAnswers);
+                      }}
+                      className="flex-1"
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-3">
+                <Button
+                  onClick={handleSaveQuestion}
+                  className="bg-[hsl(43,74%,49%)] hover:bg-[hsl(43,74%,40%)] text-white flex-1"
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    setQuestionTitle("");
+                    setAnswers(["", "", "", ""]);
+                    setCorrectAnswer(0);
+                    setShowQuestionsDialog(false);
+                  }}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </InstructorLayout>
   );
