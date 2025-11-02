@@ -38,6 +38,11 @@ import AddInstructorCourse from "./pages/instructor/AddInstructorCourse";
 import CourseDetails from "./pages/instructor/CourseDetails";
 import InstructorProfile from "./pages/instructor/InstructorProfile";
 import Students from "./pages/admin/Students";
+import Coupons from "./pages/admin/Coupons";
+import AddCoupon from "./pages/admin/AddCoupon";
+import EditCoupon from "./pages/admin/EditCoupon";
+import Certificates from "./pages/admin/Certificates";
+import Payment from "./pages/admin/Payment";
 
 const queryClient = new QueryClient();
 
@@ -77,6 +82,11 @@ const App = () => (
           <Route path="/admin/free-articles/add" element={<AddFreeArticle />} />
           <Route path="/admin/free-articles/edit/:id" element={<EditFreeArticle />} />
           <Route path="/admin/students" element={<Students />} />
+          <Route path="/admin/coupons" element={<Coupons />} />
+          <Route path="/admin/add-coupon" element={<AddCoupon />} />
+          <Route path="/admin/edit-coupon/:id" element={<EditCoupon />} />
+          <Route path="/admin/certificates" element={<Certificates />} />
+          <Route path="/admin/payment" element={<Payment />} />
           
           {/* Instructor Routes */}
           <Route path="/instructor" element={<InstructorDashboard />} />
