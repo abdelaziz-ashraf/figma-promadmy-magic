@@ -37,6 +37,7 @@ import InstructorCourses from "./pages/instructor/InstructorCourses";
 import AddInstructorCourse from "./pages/instructor/AddInstructorCourse";
 import CourseDetails from "./pages/instructor/CourseDetails";
 import InstructorProfile from "./pages/instructor/InstructorProfile";
+import Students from "./pages/admin/Students";
 
 const queryClient = new QueryClient();
 
@@ -75,6 +76,7 @@ const App = () => (
           <Route path="/admin/free-articles" element={<FreeArticles />} />
           <Route path="/admin/free-articles/add" element={<AddFreeArticle />} />
           <Route path="/admin/free-articles/edit/:id" element={<EditFreeArticle />} />
+          <Route path="/admin/students" element={<Students />} />
           
           {/* Instructor Routes */}
           <Route path="/instructor" element={<InstructorDashboard />} />
