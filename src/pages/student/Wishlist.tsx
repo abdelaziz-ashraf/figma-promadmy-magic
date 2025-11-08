@@ -1,4 +1,5 @@
 import { StudentLayout } from "@/components/student/StudentLayout";
+import WishlistTable from "@/components/student/WishlistTable";
 
 const Wishlist = () => {
   return (
@@ -8,6 +9,7 @@ const Wishlist = () => {
           <h1 className="text-3xl font-bold">Wishlist</h1>
           <p className="text-muted-foreground">Your favorite courses</p>
         </div>
+        <WishlistTable />
       </div>
     </StudentLayout>
   );
