@@ -54,6 +54,7 @@ import MyCourses from "./pages/student/MyCourses";
 import SentQuestions from "./pages/student/SentQuestions";
 import StudentPayment from "./pages/student/StudentPayment";
 import StudentQuestionDetails from "./pages/student/QuestionDetails";
+import CoursePlayer from "./pages/student/CoursePlayer";
 
 const queryClient = new QueryClient();
 
@@ -115,6 +116,7 @@ const App = () => (
           <Route path="/student/profile" element={<StudentProfile />} />
           <Route path="/student/wishlist" element={<Wishlist />} />
           <Route path="/student/courses" element={<MyCourses />} />
+          <Route path="/student/course/:id" element={<CoursePlayer />} />
           <Route path="/student/questions" element={<SentQuestions />} />
           <Route path="/student/question/:id" element={<StudentQuestionDetails />} />
           <Route path="/student/payment" element={<StudentPayment />} />
