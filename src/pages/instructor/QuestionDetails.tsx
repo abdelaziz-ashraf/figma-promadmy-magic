@@ -17,10 +17,6 @@ const mockMessages = [
     phone: "+1040725669",
     message: "Yo Reddit! What's a small thing that anyone can do at least once, anytime to improve their mood and make",
     timestamp: "10/5/2025 06:00 am",
-    attachments: [
-      { type: "image", icon: "📄" },
-      { type: "video", icon: "🎥" }
-    ]
   },
   {
     id: 2,
@@ -28,10 +24,6 @@ const mockMessages = [
     name: "Dr Ahmed",
     message: "Understanding color theory, the color wheel and finding complementary colors",
     timestamp: "10/5/2025 06:00 am",
-    attachments: [
-      { type: "image", icon: "📄" },
-      { type: "video", icon: "🎥" }
-    ]
   }
 ];
 
@@ -100,18 +92,6 @@ const QuestionDetails = () => {
                     </span>
                   </div>
                   <p className="text-foreground">{msg.message}</p>
-                  {msg.attachments && (
-                    <div className="flex gap-2 mt-2">
-                      {msg.attachments.map((att, idx) => (
-                        <div
-                          key={idx}
-                          className="w-8 h-8 rounded bg-muted flex items-center justify-center text-sm"
-                        >
-                          {att.icon}
-                        </div>
-                      ))}
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
