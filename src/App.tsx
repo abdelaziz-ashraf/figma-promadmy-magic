@@ -53,6 +53,7 @@ import Wishlist from "./pages/student/Wishlist";
 import MyCourses from "./pages/student/MyCourses";
 import SentQuestions from "./pages/student/SentQuestions";
 import StudentPayment from "./pages/student/StudentPayment";
+import StudentQuestionDetails from "./pages/student/QuestionDetails";
 
 const queryClient = new QueryClient();
 
@@ -115,6 +116,7 @@ const App = () => (
           <Route path="/student/wishlist" element={<Wishlist />} />
           <Route path="/student/courses" element={<MyCourses />} />
           <Route path="/student/questions" element={<SentQuestions />} />
+          <Route path="/student/question/:id" element={<StudentQuestionDetails />} />
           <Route path="/student/payment" element={<StudentPayment />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
