@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Bell, LayoutDashboard, GraduationCap, Menu, X, User } from "lucide-react";
+import { Bell, LayoutDashboard, GraduationCap, Menu, X, User, MessageSquare } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -17,6 +17,7 @@ export const InstructorLayout = ({ children }: InstructorLayoutProps) => {
   const navigation = [
     { name: "Dashboard", href: "/instructor", icon: LayoutDashboard },
     { name: "courses", href: "/instructor/courses", icon: GraduationCap },
+    { name: "Incoming questions", href: "/instructor/incoming-questions", icon: MessageSquare },
   ];
 
   return (

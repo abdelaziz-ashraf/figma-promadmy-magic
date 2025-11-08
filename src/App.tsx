@@ -37,6 +37,8 @@ import InstructorCourses from "./pages/instructor/InstructorCourses";
 import AddInstructorCourse from "./pages/instructor/AddInstructorCourse";
 import CourseDetails from "./pages/instructor/CourseDetails";
 import InstructorProfile from "./pages/instructor/InstructorProfile";
+import IncomingQuestions from "./pages/instructor/IncomingQuestions";
+import QuestionDetails from "./pages/instructor/QuestionDetails";
 import Students from "./pages/admin/Students";
 import Coupons from "./pages/admin/Coupons";
 import AddCoupon from "./pages/admin/AddCoupon";
@@ -94,6 +96,8 @@ const App = () => (
           <Route path="/instructor/courses/add" element={<AddInstructorCourse />} />
           <Route path="/instructor/courses/:id" element={<CourseDetails />} />
           <Route path="/instructor/profile" element={<InstructorProfile />} />
+          <Route path="/instructor/incoming-questions" element={<IncomingQuestions />} />
+          <Route path="/instructor/question/:id" element={<QuestionDetails />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
