@@ -47,6 +47,12 @@ import AddCoupon from "./pages/admin/AddCoupon";
 import EditCoupon from "./pages/admin/EditCoupon";
 import Certificates from "./pages/admin/Certificates";
 import Payment from "./pages/admin/Payment";
+import StudentDashboard from "./pages/student/StudentDashboard";
+import StudentProfile from "./pages/student/StudentProfile";
+import Wishlist from "./pages/student/Wishlist";
+import MyCourses from "./pages/student/MyCourses";
+import SentQuestions from "./pages/student/SentQuestions";
+import StudentPayment from "./pages/student/StudentPayment";
 
 const queryClient = new QueryClient();
 
@@ -102,6 +108,14 @@ const App = () => (
           <Route path="/instructor/question/:id" element={<QuestionDetails />} />
           <Route path="/instructor/certificates" element={<InstructorCertificates />} />
           <Route path="/instructor/payment" element={<InstructorPayment />} />
+          
+          {/* Student Routes */}
+          <Route path="/student" element={<StudentDashboard />} />
+          <Route path="/student/profile" element={<StudentProfile />} />
+          <Route path="/student/wishlist" element={<Wishlist />} />
+          <Route path="/student/courses" element={<MyCourses />} />
+          <Route path="/student/questions" element={<SentQuestions />} />
+          <Route path="/student/payment" element={<StudentPayment />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
