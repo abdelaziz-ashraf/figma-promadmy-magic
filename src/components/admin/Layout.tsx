@@ -17,7 +17,11 @@ import {
   LogOut,
   Bell,
   Menu,
-  X
+  X,
+  GraduationCap,
+  Ticket,
+  Award as CertificateIcon,
+  CreditCard
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -41,6 +45,10 @@ const navigation = [
   { name: "Free videos", href: "/admin/free-videos", icon: Video },
   { name: "Free articles", href: "/admin/free-articles", icon: FileText },
   { name: "Gallery", href: "/admin/gallery", icon: ImageIcon },
+  { name: "Students", href: "/admin/students", icon: GraduationCap },
+  { name: "Coupons", href: "/admin/coupons", icon: Ticket },
+  { name: "Certificates", href: "/admin/certificates", icon: CertificateIcon },
+  { name: "Payment", href: "/admin/payment", icon: CreditCard },
 ];
 
 export function Layout({ children }: LayoutProps) {

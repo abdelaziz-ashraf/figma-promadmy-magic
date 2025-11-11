@@ -1,42 +1,42 @@
-import { InstructorLayout } from "@/components/instructor/InstructorLayout";
+import { StudentLayout } from "@/components/student/StudentLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { GraduationCap, Users, DollarSign, Award } from "lucide-react";
+import { GraduationCap, BookOpen, Award, Clock } from "lucide-react";
 
-const InstructorDashboard = () => {
+const StudentDashboard = () => {
   // Mock statistics data
   const stats = [
     {
-      title: "Total Courses",
-      value: "12",
+      title: "Enrolled Courses",
+      value: "8",
       icon: GraduationCap,
       description: "Active courses",
     },
     {
-      title: "Total Students",
-      value: "248",
-      icon: Users,
-      description: "Enrolled students",
+      title: "Completed Courses",
+      value: "12",
+      icon: BookOpen,
+      description: "Finished courses",
     },
     {
-      title: "Total Earnings",
-      value: "$12,450",
-      icon: DollarSign,
-      description: "This month",
-    },
-    {
-      title: "Certificates Issued",
-      value: "156",
+      title: "Certificates Earned",
+      value: "12",
       icon: Award,
       description: "Total certificates",
+    },
+    {
+      title: "Learning Hours",
+      value: "156",
+      icon: Clock,
+      description: "Total hours",
     },
   ];
 
   return (
-    <InstructorLayout>
+    <StudentLayout>
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Dashboard</h1>
-          <p className="text-muted-foreground">Welcome to Instructor Dashboard</p>
+          <p className="text-muted-foreground">Welcome to Student Dashboard</p>
         </div>
 
         {/* Statistics Cards */}
@@ -59,8 +59,8 @@ const InstructorDashboard = () => {
           ))}
         </div>
       </div>
-    </InstructorLayout>
+    </StudentLayout>
   );
 };
 
-export default InstructorDashboard;
+export default StudentDashboard;

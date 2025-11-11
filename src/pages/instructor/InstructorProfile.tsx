@@ -131,6 +131,7 @@ const InstructorProfile = () => {
                 </div>
 
                 <div className="space-y-2">
+<<<<<<< HEAD
                   <Label htmlFor="phone">Phone</Label>
                   <Input
                     id="phone"
@@ -143,6 +144,8 @@ const InstructorProfile = () => {
                 </div>
                 
                 <div className="space-y-2">
+=======
+>>>>>>> 8425719abe93e6ef2910634bf0153282d08df490
                   <Label htmlFor="bio">Bio</Label>
                   <Textarea
                     id="bio"
@@ -155,6 +158,20 @@ const InstructorProfile = () => {
                   />
                 </div>
 
+<<<<<<< HEAD
+=======
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone</Label>
+                  <Input
+                    id="phone"
+                    placeholder="phone"
+                    value={profileData.phone}
+                    onChange={(e) =>
+                      setProfileData({ ...profileData, phone: e.target.value })
+                    }
+                  />
+                </div>
+>>>>>>> 8425719abe93e6ef2910634bf0153282d08df490
               </div>
             </div>
 
