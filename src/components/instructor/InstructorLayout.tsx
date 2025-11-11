@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-<<<<<<< HEAD
-import { Bell, LayoutDashboard, GraduationCap, Menu, X, User } from "lucide-react";
-=======
 import { Bell, LayoutDashboard, GraduationCap, Menu, X, User, MessageSquare, Award, CreditCard } from "lucide-react";
->>>>>>> 8425719abe93e6ef2910634bf0153282d08df490
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -21,13 +17,9 @@ export const InstructorLayout = ({ children }: InstructorLayoutProps) => {
   const navigation = [
     { name: "Dashboard", href: "/instructor", icon: LayoutDashboard },
     { name: "courses", href: "/instructor/courses", icon: GraduationCap },
-<<<<<<< HEAD
-    { name: "Profile", href: "/instructor/profile", icon: User },
-=======
     { name: "Incoming questions", href: "/instructor/incoming-questions", icon: MessageSquare },
     { name: "Certificates", href: "/instructor/certificates", icon: Award },
     { name: "Payment", href: "/instructor/payment", icon: CreditCard },
->>>>>>> 8425719abe93e6ef2910634bf0153282d08df490
   ];
 
   return (

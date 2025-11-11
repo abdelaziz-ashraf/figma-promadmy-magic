@@ -35,10 +35,10 @@ export function ServicesTable() {
   const { data: servicesResponse, isLoading, error } = useServices();
   const deleteServiceMutation = useDeleteService();
 
-  const services = servicesResponse?.data || [];
+  const services = Array.isArray(servicesResponse?.data) ? servicesResponse.data : [];
 
   const filteredServices = services.filter(
-    (service) =>
+    (service: any) =>
       service.name?.toLowerCase().includes(search.toLowerCase()) ||
       service.description?.toLowerCase().includes(search.toLowerCase())
   );

@@ -30,7 +30,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { useCategories, useDeleteCategory } from "@/hooks/useCategories";
+import { useCategories, useCategoryMutations } from "@/hooks/useCategories";
 
 export function CategoryTable() {
   const navigate = useNavigate();
@@ -39,10 +39,8 @@ export function CategoryTable() {
   const [entriesPerPage, setEntriesPerPage] = useState("20");
   const [currentPage, setCurrentPage] = useState(1);
   
-  const { data: categoriesResponse, isLoading, error } = useCategories();
-  const deleteCategoryMutation = useDeleteCategory();
-  
-  const categories = categoriesResponse?.data || [];
+  const { categories, loading, error, refetch } = useCategories();
+  const { deleteCategory } = useCategoryMutations();
 
   const filteredCategories = categories.filter(
     (category) =>
@@ -63,11 +61,12 @@ export function CategoryTable() {
 
   const handleDeleteCategory = async (categoryId: number, categoryName: string) => {
     try {
-      await deleteCategoryMutation.mutateAsync(categoryId.toString());
+      await deleteCategory(categoryId);
       toast({
         title: "Success",
         description: `Category "${categoryName}" has been deleted successfully`,
       });
+      refetch();
     } catch (error) {
       toast({
         title: "Error",
@@ -77,7 +76,7 @@ export function CategoryTable() {
     }
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader2 className="h-8 w-8 animate-spin" />

@@ -51,13 +51,13 @@ const EditServices = () => {
 
   useEffect(() => {
     if (serviceResponse?.data) {
-      const service = serviceResponse.data;
+      const service = serviceResponse.data as any;
       form.reset({
-        name: service.name,
+        name: service.name || "",
         description: service.description || "",
-        price: service.price,
+        price: service.price || 0,
         icon: service.icon || "",
-        is_active: service.is_active,
+        is_active: service.is_active ?? true,
       });
     }
   }, [serviceResponse, form]);
