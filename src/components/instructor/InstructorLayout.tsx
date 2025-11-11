@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Bell, LayoutDashboard, GraduationCap, Menu, X } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Bell, LayoutDashboard, GraduationCap, Menu, X, User } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -11,11 +11,13 @@ interface InstructorLayoutProps {
 
 export const InstructorLayout = ({ children }: InstructorLayoutProps) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigation = [
     { name: "Dashboard", href: "/instructor", icon: LayoutDashboard },
     { name: "courses", href: "/instructor/courses", icon: GraduationCap },
+    { name: "Profile", href: "/instructor/profile", icon: User },
   ];
 
   return (
@@ -66,7 +68,8 @@ export const InstructorLayout = ({ children }: InstructorLayoutProps) => {
             </div>
             <div className="space-y-1">
               {navigation.map((item) => {
-                const isActive = location.pathname === item.href;
+                const isActive = location.pathname === item.href || 
+                  (item.href !== "/instructor" && location.pathname.startsWith(item.href));
                 return (
                   <Link
                     key={item.name}
@@ -105,10 +108,21 @@ export const InstructorLayout = ({ children }: InstructorLayoutProps) => {
             
             <div className="flex-1" />
             
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-1 right-1 h-2 w-2 bg-destructive rounded-full" />
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={() => navigate("/instructor/profile")}
+                className="relative"
+              >
+                <User className="h-5 w-5" />
+              </Button>
+              
+              <Button variant="ghost" size="icon" className="relative">
+                <Bell className="h-5 w-5" />
+                <span className="absolute top-1 right-1 h-2 w-2 bg-destructive rounded-full" />
+              </Button>
+            </div>
           </div>
         </header>
 

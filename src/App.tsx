@@ -3,6 +3,9 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
+import Login from "./pages/Login";
 import Dashboard from "./pages/admin/Dashboard";
 import Instructor from "./pages/admin/Instructor";
 import AddInstructor from "./pages/admin/AddInstructor";
@@ -36,56 +39,64 @@ import InstructorDashboard from "./pages/instructor/InstructorDashboard";
 import InstructorCourses from "./pages/instructor/InstructorCourses";
 import AddInstructorCourse from "./pages/instructor/AddInstructorCourse";
 import CourseDetails from "./pages/instructor/CourseDetails";
+import InstructorProfile from "./pages/instructor/InstructorProfile";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+          <Route path="/login" element={<Login />} />
+          
+          {/* Admin Routes */}
           <Route path="/admin/" element={<Dashboard />} />
-          <Route path="/admin/instructor" element={<Instructor />} />
-          <Route path="/admin/instructor/add" element={<AddInstructor />} />
-          <Route path="/admin/instructor/edit/:id" element={<EditInstructor />} />
-          <Route path="/admin/categorys" element={<Category />} />
-          <Route path="/admin/categorys/add" element={<AddCategory />} />
-          <Route path="/admin/categorys/edit/:id" element={<EditCategory />} />
-          <Route path="/admin/courses" element={<Courses />} />
-          <Route path="/admin/accreditations" element={<Accreditations />} />
-          <Route path="/admin/services" element={<Services />} />
-          <Route path="/admin/services/add" element={<AddServices />} />
-          <Route path="/admin/services/edit/:id" element={<EditServices />} />
-          <Route path="/admin/faqs" element={<FAQs />} />
-          <Route path="/admin/faqs/add" element={<AddFAQ />} />
-          <Route path="/admin/faqs/edit/:id" element={<EditFAQ />} />
-          <Route path="/admin/testimonials" element={<Testimonials />} />
-          <Route path="/admin/contact-requests" element={<ContactRequests />} />
-          <Route path="/admin/email-requests" element={<EmailRequests />} />
-          <Route path="/admin/academy-info" element={<AcademyInfo />} />
-          <Route path="/admin/free-videos" element={<FreeVideos />} />
-          <Route path="/admin/free-videos/add" element={<AddFreeVideo />} />
-          <Route path="/admin/free-videos/edit/:id" element={<EditFreeVideo />} />
-          <Route path="/admin/gallery" element={<Gallery />} />
-          <Route path="/admin/gallery/add" element={<AddGallery />} />
-          <Route path="/admin/gallery/edit/:id" element={<EditGallery />} />
-          <Route path="/admin/free-articles" element={<FreeArticles />} />
-          <Route path="/admin/free-articles/add" element={<AddFreeArticle />} />
-          <Route path="/admin/free-articles/edit/:id" element={<EditFreeArticle />} />
+          {/* <Route path="/admin/" element={<ProtectedRoute requiredRole="admin"><Dashboard /></ProtectedRoute>} /> */}
+          <Route path="/admin/instructor" element={<ProtectedRoute requiredRole="admin"><Instructor /></ProtectedRoute>} />
+          <Route path="/admin/instructor/add" element={<ProtectedRoute requiredRole="admin"><AddInstructor /></ProtectedRoute>} />
+          <Route path="/admin/instructor/edit/:id" element={<ProtectedRoute requiredRole="admin"><EditInstructor /></ProtectedRoute>} />
+          <Route path="/admin/categorys" element={<ProtectedRoute requiredRole="admin"><Category /></ProtectedRoute>} />
+          <Route path="/admin/categorys/add" element={<ProtectedRoute requiredRole="admin"><AddCategory /></ProtectedRoute>} />
+          <Route path="/admin/categorys/edit/:id" element={<ProtectedRoute requiredRole="admin"><EditCategory /></ProtectedRoute>} />
+          <Route path="/admin/courses" element={<ProtectedRoute requiredRole="admin"><Courses /></ProtectedRoute>} />
+          <Route path="/admin/accreditations" element={<ProtectedRoute requiredRole="admin"><Accreditations /></ProtectedRoute>} />
+          <Route path="/admin/services" element={<ProtectedRoute requiredRole="admin"><Services /></ProtectedRoute>} />
+          <Route path="/admin/services/add" element={<ProtectedRoute requiredRole="admin"><AddServices /></ProtectedRoute>} />
+          <Route path="/admin/services/edit/:id" element={<ProtectedRoute requiredRole="admin"><EditServices /></ProtectedRoute>} />
+          <Route path="/admin/faqs" element={<ProtectedRoute requiredRole="admin"><FAQs /></ProtectedRoute>} />
+          <Route path="/admin/faqs/add" element={<ProtectedRoute requiredRole="admin"><AddFAQ /></ProtectedRoute>} />
+          <Route path="/admin/faqs/edit/:id" element={<ProtectedRoute requiredRole="admin"><EditFAQ /></ProtectedRoute>} />
+          <Route path="/admin/testimonials" element={<ProtectedRoute requiredRole="admin"><Testimonials /></ProtectedRoute>} />
+          <Route path="/admin/contact-requests" element={<ProtectedRoute requiredRole="admin"><ContactRequests /></ProtectedRoute>} />
+          <Route path="/admin/email-requests" element={<ProtectedRoute requiredRole="admin"><EmailRequests /></ProtectedRoute>} />
+          <Route path="/admin/academy-info" element={<ProtectedRoute requiredRole="admin"><AcademyInfo /></ProtectedRoute>} />
+          <Route path="/admin/free-videos" element={<ProtectedRoute requiredRole="admin"><FreeVideos /></ProtectedRoute>} />
+          <Route path="/admin/free-videos/add" element={<ProtectedRoute requiredRole="admin"><AddFreeVideo /></ProtectedRoute>} />
+          <Route path="/admin/free-videos/edit/:id" element={<ProtectedRoute requiredRole="admin"><EditFreeVideo /></ProtectedRoute>} />
+          <Route path="/admin/gallery" element={<ProtectedRoute requiredRole="admin"><Gallery /></ProtectedRoute>} />
+          <Route path="/admin/gallery/add" element={<ProtectedRoute requiredRole="admin"><AddGallery /></ProtectedRoute>} />
+          <Route path="/admin/gallery/edit/:id" element={<ProtectedRoute requiredRole="admin"><EditGallery /></ProtectedRoute>} />
+          <Route path="/admin/free-articles" element={<ProtectedRoute requiredRole="admin"><FreeArticles /></ProtectedRoute>} />
+          <Route path="/admin/free-articles/add" element={<ProtectedRoute requiredRole="admin"><AddFreeArticle /></ProtectedRoute>} />
+          <Route path="/admin/free-articles/edit/:id" element={<ProtectedRoute requiredRole="admin"><EditFreeArticle /></ProtectedRoute>} />
           
           {/* Instructor Routes */}
-          <Route path="/instructor" element={<InstructorDashboard />} />
-          <Route path="/instructor/courses" element={<InstructorCourses />} />
-          <Route path="/instructor/courses/add" element={<AddInstructorCourse />} />
-          <Route path="/instructor/courses/:id" element={<CourseDetails />} />
+          <Route path="/instructor" element={<ProtectedRoute requiredRole="instructor"><InstructorDashboard /></ProtectedRoute>} />
+          <Route path="/instructor/courses" element={<ProtectedRoute requiredRole="instructor"><InstructorCourses /></ProtectedRoute>} />
+          <Route path="/instructor/courses/add" element={<ProtectedRoute requiredRole="instructor"><AddInstructorCourse /></ProtectedRoute>} />
+          <Route path="/instructor/courses/:id" element={<ProtectedRoute requiredRole="instructor"><CourseDetails /></ProtectedRoute>} />
+          <Route path="/instructor/profile" element={<ProtectedRoute requiredRole="instructor"><InstructorProfile /></ProtectedRoute>} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

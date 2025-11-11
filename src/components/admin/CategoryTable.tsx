@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Edit2, Trash2, Plus } from "lucide-react";
+import { Search, Edit2, Trash2, Plus, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,14 +30,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-
-// Mock data
-const mockCategories = Array.from({ length: 50 }, (_, i) => ({
-  id: i + 1,
-  arabicName: "برمجة",
-  englishName: "Programming",
-  courses: [50, 80, 100, 20, 12, 12, 12, 12, 12, 12][i % 10],
-}));
+import { useCategories, useDeleteCategory } from "@/hooks/useCategories";
 
 export function CategoryTable() {
   const navigate = useNavigate();
@@ -45,12 +38,16 @@ export function CategoryTable() {
   const [searchQuery, setSearchQuery] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState("20");
   const [currentPage, setCurrentPage] = useState(1);
-  const [categories, setCategories] = useState(mockCategories);
+  
+  const { data: categoriesResponse, isLoading, error } = useCategories();
+  const deleteCategoryMutation = useDeleteCategory();
+  
+  const categories = categoriesResponse?.data || [];
 
   const filteredCategories = categories.filter(
     (category) =>
-      category.arabicName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      category.englishName.toLowerCase().includes(searchQuery.toLowerCase())
+      category.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      category.description?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredCategories.length / parseInt(entriesPerPage));
@@ -64,16 +61,37 @@ export function CategoryTable() {
     }
   };
 
-  const handleDeleteCategory = (categoryId: number, categoryName: string) => {
-    setCategories(prevCategories => 
-      prevCategories.filter(category => category.id !== categoryId)
-    );
-    
-    toast({
-      title: "Success",
-      description: `Category "${categoryName}" has been deleted successfully`,
-    });
+  const handleDeleteCategory = async (categoryId: number, categoryName: string) => {
+    try {
+      await deleteCategoryMutation.mutateAsync(categoryId.toString());
+      toast({
+        title: "Success",
+        description: `Category "${categoryName}" has been deleted successfully`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete category",
+        variant: "destructive",
+      });
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center text-red-500">
+        Error loading categories
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -102,18 +120,28 @@ export function CategoryTable() {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
-                <TableHead className="min-w-[150px]">Arabic name</TableHead>
-                <TableHead className="min-w-[150px]">English name</TableHead>
-                <TableHead className="min-w-[100px]">courses</TableHead>
+                <TableHead className="min-w-[150px]">Name</TableHead>
+                <TableHead className="min-w-[150px]">Description</TableHead>
+                <TableHead className="min-w-[100px]">Icon</TableHead>
+                <TableHead className="min-w-[100px]">Status</TableHead>
                 <TableHead className="min-w-[100px]">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {currentCategories.map((category) => (
                 <TableRow key={category.id}>
-                  <TableCell className="font-medium">{category.arabicName}</TableCell>
-                  <TableCell>{category.englishName}</TableCell>
-                  <TableCell>{category.courses}</TableCell>
+                  <TableCell className="font-medium">{category.name}</TableCell>
+                  <TableCell>{category.description}</TableCell>
+                  <TableCell>{category.icon}</TableCell>
+                  <TableCell>
+                    <span className={`px-2 py-1 rounded-full text-xs ${
+                      category.is_active 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      {category.is_active ? 'Active' : 'Inactive'}
+                    </span>
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Button
@@ -138,13 +166,13 @@ export function CategoryTable() {
                           <AlertDialogHeader>
                             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                             <AlertDialogDescription>
-                              This action cannot be undone. This will permanently delete the category "{category.arabicName}" and remove all associated data.
+                              This action cannot be undone. This will permanently delete the category "{category.name}" and remove all associated data.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                             <AlertDialogAction
-                              onClick={() => handleDeleteCategory(category.id, category.arabicName)}
+                              onClick={() => handleDeleteCategory(category.id, category.name)}
                               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                             >
                               Delete

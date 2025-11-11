@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import * as Icons from "lucide-react";
-import { Edit, Trash2, Plus } from "lucide-react";
+import { Edit, Trash2, Plus, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -24,26 +23,24 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-
-const mockServices = Array.from({ length: 15 }, (_, i) => ({
-  id: i + 1,
-  icon: ["Book", "Video", "Award", "BookOpen", "GraduationCap"][i % 5],
-  arabicName: "الدورات التدريبية عبر الإنترنت",
-  englishName: "Online Courses",
-}));
+import { useServices, useDeleteService } from "@/hooks/useServices";
 
 export function ServicesTable() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [services, setServices] = useState(mockServices);
   const itemsPerPage = 10;
+
+  const { data: servicesResponse, isLoading, error } = useServices();
+  const deleteServiceMutation = useDeleteService();
+
+  const services = servicesResponse?.data || [];
 
   const filteredServices = services.filter(
     (service) =>
-      service.arabicName.toLowerCase().includes(search.toLowerCase()) ||
-      service.englishName.toLowerCase().includes(search.toLowerCase())
+      service.name?.toLowerCase().includes(search.toLowerCase()) ||
+      service.description?.toLowerCase().includes(search.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredServices.length / itemsPerPage);
@@ -53,16 +50,37 @@ export function ServicesTable() {
     startIndex + itemsPerPage
   );
 
-  const handleDeleteService = (serviceId: number, serviceName: string) => {
-    setServices(prevServices => 
-      prevServices.filter(service => service.id !== serviceId)
-    );
-    
-    toast({
-      title: "Success",
-      description: `Service "${serviceName}" has been deleted successfully`,
-    });
+  const handleDeleteService = async (serviceId: number, serviceName: string) => {
+    try {
+      await deleteServiceMutation.mutateAsync(serviceId.toString());
+      toast({
+        title: "Success",
+        description: `Service "${serviceName}" has been deleted successfully`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete service",
+        variant: "destructive",
+      });
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center text-red-500">
+        Error loading services
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -89,67 +107,72 @@ export function ServicesTable() {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
+                <TableHead className="min-w-[150px]">Name</TableHead>
+                <TableHead className="min-w-[200px]">Description</TableHead>
+                <TableHead className="min-w-[100px]">Price</TableHead>
                 <TableHead className="min-w-[100px]">Icon</TableHead>
-                <TableHead className="min-w-[150px]">Arabic name</TableHead>
-                <TableHead className="min-w-[150px]">English name</TableHead>
+                <TableHead className="min-w-[100px]">Status</TableHead>
                 <TableHead className="min-w-[100px]">Action</TableHead>
               </TableRow>
             </TableHeader>
           <TableBody>
-            {paginatedServices.map((service) => {
-              const IconComponent = (Icons[service.icon as keyof typeof Icons] || Icons.Circle) as React.ComponentType<{ className?: string }>;
-              return (
-                <TableRow key={service.id} className="hover:bg-muted/30">
-                  <TableCell>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#C4A962]/10">
-                      <IconComponent className="h-4 w-4 text-[#C4A962]" />
-                    </div>
-                  </TableCell>
-                  <TableCell className="font-medium">{service.arabicName}</TableCell>
-                  <TableCell>{service.englishName}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => navigate(`/admin/services/edit/${service.id}`)}
-                        className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+            {paginatedServices.map((service) => (
+              <TableRow key={service.id} className="hover:bg-muted/30">
+                <TableCell className="font-medium">{service.name}</TableCell>
+                <TableCell>{service.description}</TableCell>
+                <TableCell>${service.price}</TableCell>
+                <TableCell>{service.icon}</TableCell>
+                <TableCell>
+                  <span className={`px-2 py-1 rounded-full text-xs ${
+                    service.is_active
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800'
+                  }`}>
+                    {service.is_active ? 'Active' : 'Inactive'}
+                  </span>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => navigate(`/admin/services/edit/${service.id}`)}
+                      className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone. This will permanently delete the service "{service.name}" and remove all associated data.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleDeleteService(service.id, service.name)}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                           >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This action cannot be undone. This will permanently delete the service "{service.arabicName}" and remove all associated data.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => handleDeleteService(service.id, service.arabicName)}
-                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                            >
-                              Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                            Delete
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
         </div>
