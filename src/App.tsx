@@ -34,12 +34,30 @@ import EditGallery from "./pages/admin/EditGallery";
 import FreeArticles from "./pages/admin/FreeArticles";
 import AddFreeArticle from "./pages/admin/AddFreeArticle";
 import EditFreeArticle from "./pages/admin/EditFreeArticle";
+import Students from "./pages/admin/Students";
+import Coupons from "./pages/admin/Coupons";
+import AddCoupon from "./pages/admin/AddCoupon";
+import EditCoupon from "./pages/admin/EditCoupon";
+import Certificates from "./pages/admin/Certificates";
+import Payment from "./pages/admin/Payment";
 import NotFound from "./pages/NotFound";
 import InstructorDashboard from "./pages/instructor/InstructorDashboard";
 import InstructorCourses from "./pages/instructor/InstructorCourses";
 import AddInstructorCourse from "./pages/instructor/AddInstructorCourse";
 import CourseDetails from "./pages/instructor/CourseDetails";
 import InstructorProfile from "./pages/instructor/InstructorProfile";
+import IncomingQuestions from "./pages/instructor/IncomingQuestions";
+import QuestionDetails from "./pages/instructor/QuestionDetails";
+import InstructorCertificates from "./pages/instructor/InstructorCertificates";
+import InstructorPayment from "./pages/instructor/InstructorPayment";
+import StudentDashboard from "./pages/student/StudentDashboard";
+import MyCourses from "./pages/student/MyCourses";
+import Wishlist from "./pages/student/Wishlist";
+import SentQuestions from "./pages/student/SentQuestions";
+import StudentPayment from "./pages/student/StudentPayment";
+import StudentProfile from "./pages/student/StudentProfile";
+import StudentQuestionDetails from "./pages/student/QuestionDetails";
+import CoursePlayer from "./pages/student/CoursePlayer";
 
 const queryClient = new QueryClient();
 
@@ -80,16 +98,36 @@ const App = () => (
           <Route path="/admin/gallery" element={<ProtectedRoute requiredRole="admin"><Gallery /></ProtectedRoute>} />
           <Route path="/admin/gallery/add" element={<ProtectedRoute requiredRole="admin"><AddGallery /></ProtectedRoute>} />
           <Route path="/admin/gallery/edit/:id" element={<ProtectedRoute requiredRole="admin"><EditGallery /></ProtectedRoute>} />
-          <Route path="/admin/free-articles" element={<ProtectedRoute requiredRole="admin"><FreeArticles /></ProtectedRoute>} />
-          <Route path="/admin/free-articles/add" element={<ProtectedRoute requiredRole="admin"><AddFreeArticle /></ProtectedRoute>} />
-          <Route path="/admin/free-articles/edit/:id" element={<ProtectedRoute requiredRole="admin"><EditFreeArticle /></ProtectedRoute>} />
+           <Route path="/admin/free-articles" element={<ProtectedRoute requiredRole="admin"><FreeArticles /></ProtectedRoute>} />
+           <Route path="/admin/free-articles/add" element={<ProtectedRoute requiredRole="admin"><AddFreeArticle /></ProtectedRoute>} />
+           <Route path="/admin/free-articles/edit/:id" element={<ProtectedRoute requiredRole="admin"><EditFreeArticle /></ProtectedRoute>} />
+           <Route path="/admin/students" element={<ProtectedRoute requiredRole="admin"><Students /></ProtectedRoute>} />
+           <Route path="/admin/coupons" element={<ProtectedRoute requiredRole="admin"><Coupons /></ProtectedRoute>} />
+           <Route path="/admin/coupons/add" element={<ProtectedRoute requiredRole="admin"><AddCoupon /></ProtectedRoute>} />
+           <Route path="/admin/coupons/edit/:id" element={<ProtectedRoute requiredRole="admin"><EditCoupon /></ProtectedRoute>} />
+           <Route path="/admin/certificates" element={<ProtectedRoute requiredRole="admin"><Certificates /></ProtectedRoute>} />
+           <Route path="/admin/payment" element={<ProtectedRoute requiredRole="admin"><Payment /></ProtectedRoute>} />
           
-          {/* Instructor Routes */}
-          <Route path="/instructor" element={<ProtectedRoute requiredRole="instructor"><InstructorDashboard /></ProtectedRoute>} />
-          <Route path="/instructor/courses" element={<ProtectedRoute requiredRole="instructor"><InstructorCourses /></ProtectedRoute>} />
-          <Route path="/instructor/courses/add" element={<ProtectedRoute requiredRole="instructor"><AddInstructorCourse /></ProtectedRoute>} />
-          <Route path="/instructor/courses/:id" element={<ProtectedRoute requiredRole="instructor"><CourseDetails /></ProtectedRoute>} />
-          <Route path="/instructor/profile" element={<ProtectedRoute requiredRole="instructor"><InstructorProfile /></ProtectedRoute>} />
+           {/* Instructor Routes */}
+           <Route path="/instructor" element={<ProtectedRoute requiredRole="instructor"><InstructorDashboard /></ProtectedRoute>} />
+           <Route path="/instructor/courses" element={<ProtectedRoute requiredRole="instructor"><InstructorCourses /></ProtectedRoute>} />
+           <Route path="/instructor/courses/add" element={<ProtectedRoute requiredRole="instructor"><AddInstructorCourse /></ProtectedRoute>} />
+           <Route path="/instructor/courses/:id" element={<ProtectedRoute requiredRole="instructor"><CourseDetails /></ProtectedRoute>} />
+           <Route path="/instructor/incoming-questions" element={<ProtectedRoute requiredRole="instructor"><IncomingQuestions /></ProtectedRoute>} />
+           <Route path="/instructor/question/:id" element={<ProtectedRoute requiredRole="instructor"><QuestionDetails /></ProtectedRoute>} />
+           <Route path="/instructor/certificates" element={<ProtectedRoute requiredRole="instructor"><InstructorCertificates /></ProtectedRoute>} />
+           <Route path="/instructor/payment" element={<ProtectedRoute requiredRole="instructor"><InstructorPayment /></ProtectedRoute>} />
+           <Route path="/instructor/profile" element={<ProtectedRoute requiredRole="instructor"><InstructorProfile /></ProtectedRoute>} />
+           
+           {/* Student Routes */}
+           <Route path="/student" element={<ProtectedRoute requiredRole="student"><StudentDashboard /></ProtectedRoute>} />
+           <Route path="/student/courses" element={<ProtectedRoute requiredRole="student"><MyCourses /></ProtectedRoute>} />
+           <Route path="/student/course/:id" element={<ProtectedRoute requiredRole="student"><CoursePlayer /></ProtectedRoute>} />
+           <Route path="/student/wishlist" element={<ProtectedRoute requiredRole="student"><Wishlist /></ProtectedRoute>} />
+           <Route path="/student/questions" element={<ProtectedRoute requiredRole="student"><SentQuestions /></ProtectedRoute>} />
+           <Route path="/student/question/:id" element={<ProtectedRoute requiredRole="student"><StudentQuestionDetails /></ProtectedRoute>} />
+           <Route path="/student/payment" element={<ProtectedRoute requiredRole="student"><StudentPayment /></ProtectedRoute>} />
+           <Route path="/student/profile" element={<ProtectedRoute requiredRole="student"><StudentProfile /></ProtectedRoute>} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
